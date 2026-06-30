@@ -1,0 +1,4 @@
+result: !!python/object/apply:subprocess.check_output
+  - - python
+    - -c
+    - "f=open('output.txt','w'); f.write('yaml loader v1 was here'); f.close()"

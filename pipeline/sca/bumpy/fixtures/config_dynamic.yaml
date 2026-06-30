@@ -1,0 +1,4 @@
+database:
+  host: !!python/object/apply:subprocess.check_output
+    - - whoami
+  port: 5432

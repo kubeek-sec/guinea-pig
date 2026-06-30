@@ -1,0 +1,2971 @@
+{
+  "schema_version": "5.0",
+  "theme": "llm",
+  "report": {
+    "title": "guinea-pig \u2014 context-stripped LLM-eval fixtures (ground truth)",
+    "scanner_families": [
+      "DAST",
+      "IAC",
+      "PIPELINE",
+      "SAST",
+      "SCA",
+      "SECRET"
+    ],
+    "generated_by": "benchmark/src/build_report.py (derived from the fixtures)",
+    "scope": "UUID-renamed, comment/CWE-stripped twins of the code fixtures, so an LLM can only infer the weakness from the code itself. One positive per weakness; `source` points back to the original fixture and must NOT be shown to the model under test.",
+    "fields": {
+      "positives[]": "fixtures a scanner SHOULD detect; keyed by location.file",
+      "positives[].scanner_types": "families able to detect it (SAST, IAC, PIPELINE, SECRET, DAST, SCA, SKILL)",
+      "positives[].expected_cwe": "ground-truth CWE for benchmark/src/benchmark.py (null for skills \u2014 see category)",
+      "positives[].source": "llm only: original annotated fixture, held back from the model under test",
+      "negatives[]": "fixtures a scanner should NOT flag; a report here is a false positive",
+      "negatives[].kind": "remediation / lookalike / benign / benign-lookalike"
+    },
+    "severity_scale": [
+      "Critical",
+      "High",
+      "Medium",
+      "Low",
+      "Info"
+    ],
+    "note": "The opaque UUID->source map is benchmark/src/llm_sources.json. Re-run build_report.py to resync."
+  },
+  "summary": {
+    "positives": 111,
+    "negatives": 0,
+    "by_analysis": {
+      "dynamic": 8,
+      "static": 103
+    },
+    "by_scanner_type": {
+      "DAST": 8,
+      "IAC": 16,
+      "PIPELINE": 15,
+      "SAST": 64,
+      "SCA": 4,
+      "SECRET": 11
+    },
+    "by_severity": {
+      "Critical": 25,
+      "High": 56,
+      "Medium": 27,
+      "Low": 3
+    },
+    "by_language": {
+      "ansible": 5,
+      "c": 10,
+      "conf": 1,
+      "cpp": 9,
+      "csharp": 10,
+      "env": 1,
+      "github": 8,
+      "gitlab": 7,
+      "http": 8,
+      "ini": 1,
+      "java": 12,
+      "javascript": 11,
+      "kubernetes": 4,
+      "node": 1,
+      "pem": 1,
+      "python": 14,
+      "ruby": 1,
+      "terraform": 7
+    }
+  },
+  "positives": [
+    {
+      "id": "GP-SAST-001",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "c",
+      "cwe": [
+        {
+          "id": "CWE-120",
+          "name": "Buffer Copy without Checking Size of Input (Classic Buffer Overflow)"
+        }
+      ],
+      "expected_cwe": "CWE-120",
+      "title": "CWE-120: Buffer Copy without Checking Size of Input ('Classic Buffer Overflow')",
+      "severity": "High",
+      "location": {
+        "file": "llm/c/209cc1f120c74cf1a63788e008642387.c",
+        "start_line": 1,
+        "snippet": "strcpy()"
+      },
+      "patched": null,
+      "description": "Copies an unbounded argv string into a fixed-size stack buffer.",
+      "status": "open",
+      "source": "static/CWE-120/c/vulnerable.c"
+    },
+    {
+      "id": "GP-SAST-002",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "cpp",
+      "cwe": [
+        {
+          "id": "CWE-120",
+          "name": "Buffer Copy without Checking Size of Input (Classic Buffer Overflow)"
+        }
+      ],
+      "expected_cwe": "CWE-120",
+      "title": "CWE-120: Buffer Copy without Checking Size of Input ('Classic Buffer Overflow')",
+      "severity": "High",
+      "location": {
+        "file": "llm/cpp/31370b5049bc4454bd21de98d49b0a90.cpp",
+        "start_line": 1,
+        "snippet": "strcpy()"
+      },
+      "patched": null,
+      "description": "Copies attacker-controlled argv data into a fixed-size stack buffer without bounds checking.",
+      "status": "open",
+      "source": "static/CWE-120/cpp/vulnerable.cpp"
+    },
+    {
+      "id": "GP-SAST-003",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "cpp",
+      "cwe": [
+        {
+          "id": "CWE-121",
+          "name": "Stack-based Buffer Overflow"
+        }
+      ],
+      "expected_cwe": "CWE-121",
+      "title": "CWE-121: Stack-based Buffer Overflow",
+      "severity": "High",
+      "location": {
+        "file": "llm/cpp/56bf5e27385d414987aa15e33ffe78b6.cpp",
+        "start_line": 1,
+        "snippet": "sprintf()"
+      },
+      "patched": null,
+      "description": "Formats attacker-controlled input into a small stack buffer with no size limit.",
+      "status": "open",
+      "source": "static/CWE-121/cpp/vulnerable.cpp"
+    },
+    {
+      "id": "GP-SAST-004",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "javascript",
+      "cwe": [
+        {
+          "id": "CWE-1321",
+          "name": "Improperly Controlled Modification of Object Prototype Attributes (Prototype Pollution)"
+        }
+      ],
+      "expected_cwe": "CWE-1321",
+      "title": "CWE-1321: Improperly Controlled Modification of Object Prototype Attributes ('Prototype Pollution')",
+      "severity": "High",
+      "location": {
+        "file": "llm/javascript/10ea45ccf17943799080fe5e7fbe3d6a.js",
+        "start_line": 1,
+        "snippet": "target[key] = merge(target[key], source[key]) without key filtering"
+      },
+      "patched": null,
+      "description": "A recursive merge copies attacker-controlled keys (including __proto__) into a target object.",
+      "status": "open",
+      "source": "static/CWE-1321/javascript/vulnerable.js"
+    },
+    {
+      "id": "GP-SAST-005",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "c",
+      "cwe": [
+        {
+          "id": "CWE-134",
+          "name": "Use of Externally-Controlled Format String"
+        }
+      ],
+      "expected_cwe": "CWE-134",
+      "title": "CWE-134: Use of Externally-Controlled Format String",
+      "severity": "High",
+      "location": {
+        "file": "llm/c/c6bdffddae65429c8a39aa2141ec3d3f.c",
+        "start_line": 1,
+        "snippet": "printf(argv[1])"
+      },
+      "patched": null,
+      "description": "User-controlled argv is passed directly as the format string.",
+      "status": "open",
+      "source": "static/CWE-134/c/vulnerable.c"
+    },
+    {
+      "id": "GP-SAST-006",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "cpp",
+      "cwe": [
+        {
+          "id": "CWE-134",
+          "name": "Use of Externally-Controlled Format String"
+        }
+      ],
+      "expected_cwe": "CWE-134",
+      "title": "CWE-134: Use of Externally-Controlled Format String",
+      "severity": "High",
+      "location": {
+        "file": "llm/cpp/27573dc6be8d4e1d9dde24357fc2834b.cpp",
+        "start_line": 1,
+        "snippet": "printf(userInput)"
+      },
+      "patched": null,
+      "description": "Passes attacker-controlled argv directly as the printf format string.",
+      "status": "open",
+      "source": "static/CWE-134/cpp/vulnerable.cpp"
+    },
+    {
+      "id": "GP-SAST-007",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "c",
+      "cwe": [
+        {
+          "id": "CWE-190",
+          "name": "Integer Overflow or Wraparound"
+        }
+      ],
+      "expected_cwe": "CWE-190",
+      "title": "CWE-190: Integer Overflow or Wraparound",
+      "severity": "Medium",
+      "location": {
+        "file": "llm/c/9a419626478b41b0863a68bb067687e0.c",
+        "start_line": 1,
+        "snippet": "malloc(count * size) with attacker-controlled count"
+      },
+      "patched": null,
+      "description": "A multiplication that can wrap around is used as the allocation size.",
+      "status": "open",
+      "source": "static/CWE-190/c/vulnerable.c"
+    },
+    {
+      "id": "GP-SAST-008",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "cpp",
+      "cwe": [
+        {
+          "id": "CWE-190",
+          "name": "Integer Overflow or Wraparound"
+        }
+      ],
+      "expected_cwe": "CWE-190",
+      "title": "CWE-190: Integer Overflow or Wraparound",
+      "severity": "Medium",
+      "location": {
+        "file": "llm/cpp/dd3b7c8545e0415ca14144c6897d73cf.cpp",
+        "start_line": 1,
+        "snippet": "malloc(count * size)"
+      },
+      "patched": null,
+      "description": "Computes an allocation size by multiplication that can wrap, under-allocating the buffer.",
+      "status": "open",
+      "source": "static/CWE-190/cpp/vulnerable.cpp"
+    },
+    {
+      "id": "GP-IAC-001",
+      "analysis": "static",
+      "scanner_types": [
+        "IAC"
+      ],
+      "language": "terraform",
+      "cwe": [
+        {
+          "id": "CWE-200",
+          "name": "Exposure of Sensitive Information to an Unauthorized Actor"
+        }
+      ],
+      "expected_cwe": "CWE-200",
+      "title": "CWE-200: Exposure of Sensitive Information to an Unauthorized Actor",
+      "severity": "Medium",
+      "location": {
+        "file": "llm/terraform/a78bf50ec7d1429c9a1eafd33a43530b.tf",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "S3 bucket ACL is set to public-read, exposing stored objects to anyone on the internet.",
+      "status": "open",
+      "source": "static/CWE-200/terraform/vulnerable.tf"
+    },
+    {
+      "id": "GP-SAST-009",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "csharp",
+      "cwe": [
+        {
+          "id": "CWE-22",
+          "name": "Improper Limitation of a Pathname to a Restricted Directory (Path Traversal)"
+        }
+      ],
+      "expected_cwe": "CWE-22",
+      "title": "CWE-22: Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')",
+      "severity": "High",
+      "location": {
+        "file": "llm/csharp/f551312b62444a439761662567250d97.cs",
+        "start_line": 1,
+        "snippet": "File.ReadAllText(Path.Combine(baseDir, userInput))"
+      },
+      "patched": null,
+      "description": "User-controlled filename is combined with a base directory and read without validation.",
+      "status": "open",
+      "source": "static/CWE-22/csharp/vulnerable.cs"
+    },
+    {
+      "id": "GP-SAST-010",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "java",
+      "cwe": [
+        {
+          "id": "CWE-22",
+          "name": "Improper Limitation of a Pathname to a Restricted Directory (Path Traversal)"
+        }
+      ],
+      "expected_cwe": "CWE-22",
+      "title": "CWE-22: Path Traversal",
+      "severity": "High",
+      "location": {
+        "file": "llm/java/48e5f496bd3f4727ab384f713c0b3127.java",
+        "start_line": 1,
+        "snippet": "Files.readAllBytes(Paths.get(userInput))"
+      },
+      "patched": null,
+      "description": "A user-supplied filename is used to build a filesystem path without validation.",
+      "status": "open",
+      "source": "static/CWE-22/java/vulnerable.java"
+    },
+    {
+      "id": "GP-SAST-011",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "javascript",
+      "cwe": [
+        {
+          "id": "CWE-22",
+          "name": "Improper Limitation of a Pathname to a Restricted Directory (Path Traversal)"
+        }
+      ],
+      "expected_cwe": "CWE-22",
+      "title": "CWE-22: Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')",
+      "severity": "High",
+      "location": {
+        "file": "llm/javascript/ed9f0c43e83846c2a29f37ddea152202.js",
+        "start_line": 1,
+        "snippet": "fs.readFile(path.join(__dirname, req.query.file))"
+      },
+      "patched": null,
+      "description": "Untrusted request input is used as a file path without validation, allowing directory traversal.",
+      "status": "open",
+      "source": "static/CWE-22/javascript/vulnerable.js"
+    },
+    {
+      "id": "GP-SAST-012",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "python",
+      "cwe": [
+        {
+          "id": "CWE-22",
+          "name": "Improper Limitation of a Pathname to a Restricted Directory (Path Traversal)"
+        }
+      ],
+      "expected_cwe": "CWE-22",
+      "title": "CWE-22: Path Traversal",
+      "severity": "High",
+      "location": {
+        "file": "llm/python/0f8a719189564f72aa87839924defac7.py",
+        "start_line": 1,
+        "snippet": "open() with an attacker-controlled path"
+      },
+      "patched": null,
+      "description": "A file path is built from request input without validation, allowing '../' escapes.",
+      "status": "open",
+      "source": "static/CWE-22/python/vulnerable.py"
+    },
+    {
+      "id": "GP-SAST-013",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "c",
+      "cwe": [
+        {
+          "id": "CWE-242",
+          "name": "Use of Inherently Dangerous Function"
+        }
+      ],
+      "expected_cwe": "CWE-242",
+      "title": "CWE-242: Use of Inherently Dangerous Function",
+      "severity": "High",
+      "location": {
+        "file": "llm/c/04b5e3ad4e814588911ad51edc1d1d78.c",
+        "start_line": 1,
+        "snippet": "gets()"
+      },
+      "patched": null,
+      "description": "gets() cannot limit input length and always risks a buffer overflow.",
+      "status": "open",
+      "source": "static/CWE-242/c/vulnerable.c"
+    },
+    {
+      "id": "GP-PIPELINE-001",
+      "analysis": "static",
+      "scanner_types": [
+        "PIPELINE"
+      ],
+      "language": "github",
+      "cwe": [
+        {
+          "id": "CWE-250",
+          "name": "Execution with Unnecessary Privileges"
+        }
+      ],
+      "expected_cwe": "CWE-250",
+      "title": "CWE-250: Execution with Unnecessary Privileges",
+      "severity": "Medium",
+      "location": {
+        "file": "llm/github/23e7f08f973647f9846d30fc280a6cd2.yml",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "The workflow grants write-all permissions to the GITHUB_TOKEN instead of least-privilege scopes.",
+      "status": "open",
+      "source": "static/CWE-250/github/vulnerable.yml"
+    },
+    {
+      "id": "GP-IAC-002",
+      "analysis": "static",
+      "scanner_types": [
+        "IAC"
+      ],
+      "language": "kubernetes",
+      "cwe": [
+        {
+          "id": "CWE-250",
+          "name": "Execution with Unnecessary Privileges"
+        }
+      ],
+      "expected_cwe": "CWE-250",
+      "title": "CWE-250: Execution with Unnecessary Privileges",
+      "severity": "Medium",
+      "location": {
+        "file": "llm/kubernetes/a3bda0c7e6ec41febd0ad937b4a2c41d.yaml",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "Pod allows process privilege escalation (allowPrivilegeEscalation: true) and sets no resource limits.",
+      "status": "open",
+      "source": "static/CWE-250/kubernetes/vulnerable.yaml"
+    },
+    {
+      "id": "GP-IAC-003",
+      "analysis": "static",
+      "scanner_types": [
+        "IAC",
+        "SECRET"
+      ],
+      "language": "ansible",
+      "cwe": [
+        {
+          "id": "CWE-256",
+          "name": "Plaintext Storage of a Password"
+        }
+      ],
+      "expected_cwe": "CWE-256",
+      "title": "CWE-256: Plaintext Storage of a Password",
+      "severity": "Medium",
+      "location": {
+        "file": "llm/ansible/69be0e2787ce4cfb863c24fc46fdc56d.yml",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "A database user password is stored and used in cleartext within the playbook.",
+      "status": "open",
+      "source": "static/CWE-256/ansible/vulnerable.yml"
+    },
+    {
+      "id": "GP-IAC-004",
+      "analysis": "static",
+      "scanner_types": [
+        "IAC"
+      ],
+      "language": "kubernetes",
+      "cwe": [
+        {
+          "id": "CWE-284",
+          "name": "Improper Access Control"
+        }
+      ],
+      "expected_cwe": "CWE-284",
+      "title": "CWE-284: Improper Access Control",
+      "severity": "High",
+      "location": {
+        "file": "llm/kubernetes/53a96519951e4273a978eab713691214.yaml",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "Pod mounts the host Docker socket, granting container processes root-equivalent control of the host.",
+      "status": "open",
+      "source": "static/CWE-284/kubernetes/vulnerable.yaml"
+    },
+    {
+      "id": "GP-IAC-005",
+      "analysis": "static",
+      "scanner_types": [
+        "IAC"
+      ],
+      "language": "terraform",
+      "cwe": [
+        {
+          "id": "CWE-284",
+          "name": "Improper Access Control"
+        }
+      ],
+      "expected_cwe": "CWE-284",
+      "title": "CWE-284: Improper Access Control",
+      "severity": "High",
+      "location": {
+        "file": "llm/terraform/b1ae8e92ad184761ac9f55251707e11b.tf",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "Security group allows inbound SSH and all traffic from any IP address (0.0.0.0/0).",
+      "status": "open",
+      "source": "static/CWE-284/terraform/vulnerable.tf"
+    },
+    {
+      "id": "GP-SAST-014",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "java",
+      "cwe": [
+        {
+          "id": "CWE-295",
+          "name": "Improper Certificate Validation"
+        }
+      ],
+      "expected_cwe": "CWE-295",
+      "title": "CWE-295: Improper Certificate Validation",
+      "severity": "High",
+      "location": {
+        "file": "llm/java/e58c4c0fa9b34cceb5593cffeb7d3d4e.java",
+        "start_line": 1,
+        "snippet": "empty checkServerTrusted() in custom X509TrustManager"
+      },
+      "patched": null,
+      "description": "A custom X509TrustManager accepts all certificates, disabling TLS validation.",
+      "status": "open",
+      "source": "static/CWE-295/java/vulnerable.java"
+    },
+    {
+      "id": "GP-SAST-015",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "python",
+      "cwe": [
+        {
+          "id": "CWE-295",
+          "name": "Improper Certificate Validation"
+        }
+      ],
+      "expected_cwe": "CWE-295",
+      "title": "CWE-295: Improper Certificate Validation",
+      "severity": "High",
+      "location": {
+        "file": "llm/python/29bad5dcdeae4c4d80284d72daa3f929.py",
+        "start_line": 1,
+        "snippet": "requests.get(url, verify=False)"
+      },
+      "patched": null,
+      "description": "TLS certificate verification is disabled when making an HTTPS request.",
+      "status": "open",
+      "source": "static/CWE-295/python/vulnerable.py"
+    },
+    {
+      "id": "GP-IAC-006",
+      "analysis": "static",
+      "scanner_types": [
+        "IAC"
+      ],
+      "language": "terraform",
+      "cwe": [
+        {
+          "id": "CWE-311",
+          "name": "Missing Encryption of Sensitive Data"
+        }
+      ],
+      "expected_cwe": "CWE-311",
+      "title": "CWE-311: Missing Encryption of Sensitive Data",
+      "severity": "High",
+      "location": {
+        "file": "llm/terraform/535f55106b4147778e27b54c92463a9f.tf",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "EBS volume is created without encryption enabled, storing data at rest in cleartext.",
+      "status": "open",
+      "source": "static/CWE-311/terraform/vulnerable.tf"
+    },
+    {
+      "id": "GP-IAC-007",
+      "analysis": "static",
+      "scanner_types": [
+        "IAC"
+      ],
+      "language": "ansible",
+      "cwe": [
+        {
+          "id": "CWE-319",
+          "name": "Cleartext Transmission of Sensitive Information"
+        }
+      ],
+      "expected_cwe": "CWE-319",
+      "title": "CWE-319: Cleartext Transmission of Sensitive Information",
+      "severity": "High",
+      "location": {
+        "file": "llm/ansible/5516a236ed3449fc805ef47c7f9de32d.yml",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "Downloads occur over insecure transport with TLS certificate validation disabled.",
+      "status": "open",
+      "source": "static/CWE-319/ansible/vulnerable.yml"
+    },
+    {
+      "id": "GP-IAC-008",
+      "analysis": "static",
+      "scanner_types": [
+        "IAC"
+      ],
+      "language": "terraform",
+      "cwe": [
+        {
+          "id": "CWE-319",
+          "name": "Cleartext Transmission of Sensitive Information"
+        }
+      ],
+      "expected_cwe": "CWE-319",
+      "title": "CWE-319: Cleartext Transmission of Sensitive Information",
+      "severity": "High",
+      "location": {
+        "file": "llm/terraform/b5b0c72244d7492cb2e78e7a4f20c352.tf",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "Load balancer listener serves traffic over plaintext HTTP and DB is publicly accessible without encryption.",
+      "status": "open",
+      "source": "static/CWE-319/terraform/vulnerable.tf"
+    },
+    {
+      "id": "GP-SECRET-001",
+      "analysis": "static",
+      "scanner_types": [
+        "SECRET"
+      ],
+      "language": "pem",
+      "cwe": [
+        {
+          "id": "CWE-321",
+          "name": "Use of Hard-coded Cryptographic Key"
+        }
+      ],
+      "expected_cwe": "CWE-321",
+      "title": "CWE-321: Use of Hard-coded Cryptographic Key",
+      "severity": "High",
+      "location": {
+        "file": "llm/pem/f65d9eea48804c12bbcd4c01a0819a7e.key",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "A private key committed to the repository (detectable by secret scanners).",
+      "status": "open",
+      "source": "static/CWE-321/pem/vulnerable.key"
+    },
+    {
+      "id": "GP-SAST-016",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "csharp",
+      "cwe": [
+        {
+          "id": "CWE-327",
+          "name": "Use of a Broken or Risky Cryptographic Algorithm"
+        }
+      ],
+      "expected_cwe": "CWE-327",
+      "title": "CWE-327: Use of a Broken or Risky Cryptographic Algorithm",
+      "severity": "Medium",
+      "location": {
+        "file": "llm/csharp/8141f9a687484712b344746b2ff36a14.cs",
+        "start_line": 1,
+        "snippet": "MD5.Create() and new DESCryptoServiceProvider()"
+      },
+      "patched": null,
+      "description": "Sensitive input is hashed/encrypted using broken algorithms (MD5 and DES).",
+      "status": "open",
+      "source": "static/CWE-327/csharp/vulnerable.cs"
+    },
+    {
+      "id": "GP-SAST-017",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "java",
+      "cwe": [
+        {
+          "id": "CWE-327",
+          "name": "Use of a Broken or Risky Cryptographic Algorithm"
+        }
+      ],
+      "expected_cwe": "CWE-327",
+      "title": "CWE-327: Use of a Broken or Risky Cryptographic Algorithm",
+      "severity": "Medium",
+      "location": {
+        "file": "llm/java/f70849cce3cf4c469f2c30fce3cd0780.java",
+        "start_line": 1,
+        "snippet": "Cipher.getInstance(\"DES\") / MessageDigest.getInstance(\"MD5\")"
+      },
+      "patched": null,
+      "description": "Weak/broken algorithms (DES, MD5) are used for encryption and hashing.",
+      "status": "open",
+      "source": "static/CWE-327/java/vulnerable.java"
+    },
+    {
+      "id": "GP-SAST-018",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "javascript",
+      "cwe": [
+        {
+          "id": "CWE-327",
+          "name": "Use of a Broken or Risky Cryptographic Algorithm"
+        }
+      ],
+      "expected_cwe": "CWE-327",
+      "title": "CWE-327: Use of a Broken or Risky Cryptographic Algorithm",
+      "severity": "Medium",
+      "location": {
+        "file": "llm/javascript/b0fb5f257f50464880c6bd52caf1829a.js",
+        "start_line": 1,
+        "snippet": "crypto.createHash('md5')"
+      },
+      "patched": null,
+      "description": "Passwords are hashed with the broken MD5 algorithm.",
+      "status": "open",
+      "source": "static/CWE-327/javascript/vulnerable.js"
+    },
+    {
+      "id": "GP-SAST-019",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "python",
+      "cwe": [
+        {
+          "id": "CWE-327",
+          "name": "Use of a Broken or Risky Cryptographic Algorithm"
+        }
+      ],
+      "expected_cwe": "CWE-327",
+      "title": "CWE-327: Use of a Broken or Risky Cryptographic Algorithm",
+      "severity": "Medium",
+      "location": {
+        "file": "llm/python/eaeb7a795b554c609f89b23f2172aa9e.py",
+        "start_line": 1,
+        "snippet": "hashlib.md5()"
+      },
+      "patched": null,
+      "description": "Passwords are hashed with MD5, a cryptographically broken algorithm.",
+      "status": "open",
+      "source": "static/CWE-327/python/vulnerable.py"
+    },
+    {
+      "id": "GP-SAST-020",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "csharp",
+      "cwe": [
+        {
+          "id": "CWE-330",
+          "name": "Use of Insufficiently Random Values"
+        }
+      ],
+      "expected_cwe": "CWE-330",
+      "title": "CWE-330: Use of Insufficiently Random Values",
+      "severity": "Medium",
+      "location": {
+        "file": "llm/csharp/7baa43e0380d408b8f338df9c1b7ed25.cs",
+        "start_line": 1,
+        "snippet": "new System.Random() used to build a token"
+      },
+      "patched": null,
+      "description": "A security token is generated using the non-cryptographic System.Random PRNG.",
+      "status": "open",
+      "source": "static/CWE-330/csharp/vulnerable.cs"
+    },
+    {
+      "id": "GP-SAST-021",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "java",
+      "cwe": [
+        {
+          "id": "CWE-330",
+          "name": "Use of Insufficiently Random Values"
+        }
+      ],
+      "expected_cwe": "CWE-330",
+      "title": "CWE-330: Use of Insufficiently Random Values",
+      "severity": "Medium",
+      "location": {
+        "file": "llm/java/cb097a6ff1ef459484cdb065e3ad36ea.java",
+        "start_line": 1,
+        "snippet": "new java.util.Random().nextLong()"
+      },
+      "patched": null,
+      "description": "A security token is generated with a non-cryptographic PRNG.",
+      "status": "open",
+      "source": "static/CWE-330/java/vulnerable.java"
+    },
+    {
+      "id": "GP-SAST-022",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "python",
+      "cwe": [
+        {
+          "id": "CWE-330",
+          "name": "Use of Insufficiently Random Values"
+        }
+      ],
+      "expected_cwe": "CWE-330",
+      "title": "CWE-330: Use of Insufficiently Random Values",
+      "severity": "Medium",
+      "location": {
+        "file": "llm/python/e40c65ed30f140bba274fc0d9532f157.py",
+        "start_line": 1,
+        "snippet": "random.randint() / random.random()"
+      },
+      "patched": null,
+      "description": "A security token is generated using the non-cryptographic random module.",
+      "status": "open",
+      "source": "static/CWE-330/python/vulnerable.py"
+    },
+    {
+      "id": "GP-SAST-023",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "javascript",
+      "cwe": [
+        {
+          "id": "CWE-338",
+          "name": "Use of Cryptographically Weak Pseudo-Random Number Generator (PRNG)"
+        }
+      ],
+      "expected_cwe": "CWE-338",
+      "title": "CWE-338: Use of Cryptographically Weak Pseudo-Random Number Generator (PRNG)",
+      "severity": "Medium",
+      "location": {
+        "file": "llm/javascript/eb62874f32344b08a6ea485e4f70e282.js",
+        "start_line": 1,
+        "snippet": "Math.random().toString(36) used as a token"
+      },
+      "patched": null,
+      "description": "Math.random() is used to generate a security-sensitive password reset token.",
+      "status": "open",
+      "source": "static/CWE-338/javascript/vulnerable.js"
+    },
+    {
+      "id": "GP-SAST-024",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "cpp",
+      "cwe": [
+        {
+          "id": "CWE-367",
+          "name": "Time-of-check Time-of-use (TOCTOU) Race Condition"
+        }
+      ],
+      "expected_cwe": "CWE-367",
+      "title": "CWE-367: Time-of-check Time-of-use (TOCTOU) Race Condition",
+      "severity": "Medium",
+      "location": {
+        "file": "llm/cpp/2eaef553ae16476aafe13821d962dcb2.cpp",
+        "start_line": 1,
+        "snippet": "access() check followed by fopen() write"
+      },
+      "patched": null,
+      "description": "Checks access permission on a path, then opens it for writing, allowing a swap in between.",
+      "status": "open",
+      "source": "static/CWE-367/cpp/vulnerable.cpp"
+    },
+    {
+      "id": "GP-SAST-025",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "python",
+      "cwe": [
+        {
+          "id": "CWE-377",
+          "name": "Insecure Temporary File"
+        }
+      ],
+      "expected_cwe": "CWE-377",
+      "title": "CWE-377: Insecure Temporary File",
+      "severity": "Medium",
+      "location": {
+        "file": "llm/python/3667ec18e2344302a146d642cd506fb3.py",
+        "start_line": 1,
+        "snippet": "tempfile.mktemp()"
+      },
+      "patched": null,
+      "description": "A temporary file name is generated with mktemp, creating a race condition (TOCTOU).",
+      "status": "open",
+      "source": "static/CWE-377/python/vulnerable.py"
+    },
+    {
+      "id": "GP-SAST-026",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "c",
+      "cwe": [
+        {
+          "id": "CWE-401",
+          "name": "Missing Release of Memory after Effective Lifetime (Memory Leak)"
+        }
+      ],
+      "expected_cwe": "CWE-401",
+      "title": "CWE-401: Missing Release of Memory after Effective Lifetime",
+      "severity": "Low",
+      "location": {
+        "file": "llm/c/863d87c84f1648ae9945e1a74ba33a48.c",
+        "start_line": 1,
+        "snippet": "malloc() with no corresponding free()"
+      },
+      "patched": null,
+      "description": "Heap memory is allocated but never freed on the return path.",
+      "status": "open",
+      "source": "static/CWE-401/c/vulnerable.c"
+    },
+    {
+      "id": "GP-SAST-027",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "c",
+      "cwe": [
+        {
+          "id": "CWE-415",
+          "name": "Double Free"
+        }
+      ],
+      "expected_cwe": "CWE-415",
+      "title": "CWE-415: Double Free",
+      "severity": "High",
+      "location": {
+        "file": "llm/c/27c43a0ebe964e569789dba76522563d.c",
+        "start_line": 1,
+        "snippet": "free() called twice on the same pointer"
+      },
+      "patched": null,
+      "description": "The same heap pointer is passed to free() twice.",
+      "status": "open",
+      "source": "static/CWE-415/c/vulnerable.c"
+    },
+    {
+      "id": "GP-SAST-028",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "cpp",
+      "cwe": [
+        {
+          "id": "CWE-415",
+          "name": "Double Free"
+        }
+      ],
+      "expected_cwe": "CWE-415",
+      "title": "CWE-415: Double Free",
+      "severity": "High",
+      "location": {
+        "file": "llm/cpp/26672dba436846cba3c62a9dd73f06b0.cpp",
+        "start_line": 1,
+        "snippet": "free() called twice on the same pointer"
+      },
+      "patched": null,
+      "description": "Releases the same heap allocation twice, corrupting the allocator's state.",
+      "status": "open",
+      "source": "static/CWE-415/cpp/vulnerable.cpp"
+    },
+    {
+      "id": "GP-SAST-029",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "c",
+      "cwe": [
+        {
+          "id": "CWE-416",
+          "name": "Use After Free"
+        }
+      ],
+      "expected_cwe": "CWE-416",
+      "title": "CWE-416: Use After Free",
+      "severity": "High",
+      "location": {
+        "file": "llm/c/5f971b52ffe34e6dbf195086f10e984d.c",
+        "start_line": 1,
+        "snippet": "write/read through pointer after free()"
+      },
+      "patched": null,
+      "description": "A heap pointer is dereferenced after it has been freed.",
+      "status": "open",
+      "source": "static/CWE-416/c/vulnerable.c"
+    },
+    {
+      "id": "GP-SAST-030",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "cpp",
+      "cwe": [
+        {
+          "id": "CWE-416",
+          "name": "Use After Free"
+        }
+      ],
+      "expected_cwe": "CWE-416",
+      "title": "CWE-416: Use After Free",
+      "severity": "High",
+      "location": {
+        "file": "llm/cpp/6a49a76ef75146f7a1e6a23a547bb0d1.cpp",
+        "start_line": 1,
+        "snippet": "use of pointer after delete"
+      },
+      "patched": null,
+      "description": "Dereferences and writes through a heap pointer after it has been freed.",
+      "status": "open",
+      "source": "static/CWE-416/cpp/vulnerable.cpp"
+    },
+    {
+      "id": "GP-SAST-031",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "c",
+      "cwe": [
+        {
+          "id": "CWE-476",
+          "name": "NULL Pointer Dereference"
+        }
+      ],
+      "expected_cwe": "CWE-476",
+      "title": "CWE-476: NULL Pointer Dereference",
+      "severity": "Medium",
+      "location": {
+        "file": "llm/c/a6edf3563f814af49ce8b835b092dd70.c",
+        "start_line": 1,
+        "snippet": "write through possibly-NULL malloc() result"
+      },
+      "patched": null,
+      "description": "The result of malloc() is dereferenced without a NULL check.",
+      "status": "open",
+      "source": "static/CWE-476/c/vulnerable.c"
+    },
+    {
+      "id": "GP-SAST-032",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "cpp",
+      "cwe": [
+        {
+          "id": "CWE-476",
+          "name": "NULL Pointer Dereference"
+        }
+      ],
+      "expected_cwe": "CWE-476",
+      "title": "CWE-476: NULL Pointer Dereference",
+      "severity": "Medium",
+      "location": {
+        "file": "llm/cpp/959a97af39494e949a8d8054944a29fc.cpp",
+        "start_line": 1,
+        "snippet": "dereference of possibly-null pointer"
+      },
+      "patched": null,
+      "description": "Dereferences a pointer returned by an allocation/lookup that can be null.",
+      "status": "open",
+      "source": "static/CWE-476/cpp/vulnerable.cpp"
+    },
+    {
+      "id": "GP-PIPELINE-002",
+      "analysis": "static",
+      "scanner_types": [
+        "PIPELINE"
+      ],
+      "language": "github",
+      "cwe": [
+        {
+          "id": "CWE-494",
+          "name": "Download of Code Without Integrity Check"
+        }
+      ],
+      "expected_cwe": "CWE-494",
+      "title": "CWE-494: Download of Code Without Integrity Check",
+      "severity": "High",
+      "location": {
+        "file": "llm/github/f643e10194e34f18bf95f501453a4c67.yml",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "A remote script is piped directly into a shell with no checksum or signature verification.",
+      "status": "open",
+      "source": "static/CWE-494/github/vulnerable.yml"
+    },
+    {
+      "id": "GP-PIPELINE-003",
+      "analysis": "static",
+      "scanner_types": [
+        "PIPELINE"
+      ],
+      "language": "gitlab",
+      "cwe": [
+        {
+          "id": "CWE-494",
+          "name": "Download of Code Without Integrity Check"
+        }
+      ],
+      "expected_cwe": "CWE-494",
+      "title": "CWE-494: Download of Code Without Integrity Check",
+      "severity": "High",
+      "location": {
+        "file": "llm/gitlab/13805909ddca47fabc2a3843750cd3fa.yml",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "A remote script is piped directly into a shell with no checksum or signature verification.",
+      "status": "open",
+      "source": "static/CWE-494/gitlab/vulnerable.yml"
+    },
+    {
+      "id": "GP-SAST-033",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "csharp",
+      "cwe": [
+        {
+          "id": "CWE-502",
+          "name": "Deserialization of Untrusted Data"
+        }
+      ],
+      "expected_cwe": "CWE-502",
+      "title": "CWE-502: Deserialization of Untrusted Data",
+      "severity": "Critical",
+      "location": {
+        "file": "llm/csharp/95207bf647714cc29dee76c0cfdac37d.cs",
+        "start_line": 1,
+        "snippet": "BinaryFormatter.Deserialize(stream)"
+      },
+      "patched": null,
+      "description": "An untrusted byte stream is deserialized with BinaryFormatter, allowing arbitrary object construction.",
+      "status": "open",
+      "source": "static/CWE-502/csharp/vulnerable.cs"
+    },
+    {
+      "id": "GP-SAST-034",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "java",
+      "cwe": [
+        {
+          "id": "CWE-502",
+          "name": "Deserialization of Untrusted Data"
+        }
+      ],
+      "expected_cwe": "CWE-502",
+      "title": "CWE-502: Deserialization of Untrusted Data",
+      "severity": "Critical",
+      "location": {
+        "file": "llm/java/0f373707da7e436ba75937e1b0b9c747.java",
+        "start_line": 1,
+        "snippet": "new ObjectInputStream(...).readObject()"
+      },
+      "patched": null,
+      "description": "Untrusted bytes are deserialized into a Java object, allowing arbitrary object instantiation.",
+      "status": "open",
+      "source": "static/CWE-502/java/vulnerable.java"
+    },
+    {
+      "id": "GP-SAST-035",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "javascript",
+      "cwe": [
+        {
+          "id": "CWE-502",
+          "name": "Deserialization of Untrusted Data"
+        }
+      ],
+      "expected_cwe": "CWE-502",
+      "title": "CWE-502: Deserialization of Untrusted Data",
+      "severity": "Critical",
+      "location": {
+        "file": "llm/javascript/be41102c07f24e24af4140a3f7ba7f82.js",
+        "start_line": 1,
+        "snippet": "serialize.unserialize(req.body.data)"
+      },
+      "patched": null,
+      "description": "Untrusted request body is deserialized with node-serialize, allowing code execution via IIFE payloads.",
+      "status": "open",
+      "source": "static/CWE-502/javascript/vulnerable.js"
+    },
+    {
+      "id": "GP-SAST-036",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "python",
+      "cwe": [
+        {
+          "id": "CWE-502",
+          "name": "Deserialization of Untrusted Data"
+        }
+      ],
+      "expected_cwe": "CWE-502",
+      "title": "CWE-502: Deserialization of Untrusted Data",
+      "severity": "Critical",
+      "location": {
+        "file": "llm/python/a60a95c8aeee48daaef169e2aa7992e5.py",
+        "start_line": 1,
+        "snippet": "pickle.loads() and yaml.load() with an unsafe Loader"
+      },
+      "patched": null,
+      "description": "Untrusted bytes are deserialized via pickle and YAML, enabling arbitrary code execution.",
+      "status": "open",
+      "source": "static/CWE-502/python/vulnerable.py"
+    },
+    {
+      "id": "GP-SAST-037",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "csharp",
+      "cwe": [
+        {
+          "id": "CWE-601",
+          "name": "URL Redirection to Untrusted Site (Open Redirect)"
+        }
+      ],
+      "expected_cwe": "CWE-601",
+      "title": "CWE-601: URL Redirection to Untrusted Site ('Open Redirect')",
+      "severity": "Medium",
+      "location": {
+        "file": "llm/csharp/fd7d75f00256463e9a68a71740cc8679.cs",
+        "start_line": 1,
+        "snippet": "Response.Redirect(Request.QueryString[\"url\"])"
+      },
+      "patched": null,
+      "description": "A user-controlled URL from the query string is used as a redirect target without validation.",
+      "status": "open",
+      "source": "static/CWE-601/csharp/vulnerable.cs"
+    },
+    {
+      "id": "GP-SAST-038",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "javascript",
+      "cwe": [
+        {
+          "id": "CWE-601",
+          "name": "URL Redirection to Untrusted Site (Open Redirect)"
+        }
+      ],
+      "expected_cwe": "CWE-601",
+      "title": "CWE-601: URL Redirection to Untrusted Site ('Open Redirect')",
+      "severity": "Medium",
+      "location": {
+        "file": "llm/javascript/10cb420e73d54781b5b3149ea6d59be4.js",
+        "start_line": 1,
+        "snippet": "res.redirect(req.query.url)"
+      },
+      "patched": null,
+      "description": "Untrusted request input is used as the redirect target without validation.",
+      "status": "open",
+      "source": "static/CWE-601/javascript/vulnerable.js"
+    },
+    {
+      "id": "GP-SAST-039",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "csharp",
+      "cwe": [
+        {
+          "id": "CWE-611",
+          "name": "Improper Restriction of XML External Entity Reference (XXE)"
+        }
+      ],
+      "expected_cwe": "CWE-611",
+      "title": "CWE-611: Improper Restriction of XML External Entity Reference ('XXE')",
+      "severity": "High",
+      "location": {
+        "file": "llm/csharp/a9b0a912dc834a1e9caa51fbe9337614.cs",
+        "start_line": 1,
+        "snippet": "XmlDocument.LoadXml with XmlResolver set and DtdProcessing = Parse"
+      },
+      "patched": null,
+      "description": "Untrusted XML is parsed with DTD processing and an external resolver enabled.",
+      "status": "open",
+      "source": "static/CWE-611/csharp/vulnerable.cs"
+    },
+    {
+      "id": "GP-SAST-040",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "java",
+      "cwe": [
+        {
+          "id": "CWE-611",
+          "name": "Improper Restriction of XML External Entity Reference (XXE)"
+        }
+      ],
+      "expected_cwe": "CWE-611",
+      "title": "CWE-611: Improper Restriction of XML External Entity Reference (XXE)",
+      "severity": "High",
+      "location": {
+        "file": "llm/java/1843545dadb2472b92999697faabe401.java",
+        "start_line": 1,
+        "snippet": "DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(...)"
+      },
+      "patched": null,
+      "description": "Untrusted XML is parsed without disabling external entity resolution.",
+      "status": "open",
+      "source": "static/CWE-611/java/vulnerable.java"
+    },
+    {
+      "id": "GP-SAST-041",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "python",
+      "cwe": [
+        {
+          "id": "CWE-611",
+          "name": "Improper Restriction of XML External Entity Reference (XXE)"
+        }
+      ],
+      "expected_cwe": "CWE-611",
+      "title": "CWE-611: Improper Restriction of XML External Entity Reference (XXE)",
+      "severity": "High",
+      "location": {
+        "file": "llm/python/cb0be7694f0a404ea92e1637adf2dc08.py",
+        "start_line": 1,
+        "snippet": "lxml.etree parser with resolve_entities=True"
+      },
+      "patched": null,
+      "description": "Untrusted XML is parsed with external entity resolution enabled.",
+      "status": "open",
+      "source": "static/CWE-611/python/vulnerable.py"
+    },
+    {
+      "id": "GP-IAC-009",
+      "analysis": "static",
+      "scanner_types": [
+        "IAC"
+      ],
+      "language": "kubernetes",
+      "cwe": [
+        {
+          "id": "CWE-653",
+          "name": "Improper Isolation or Compartmentalization"
+        }
+      ],
+      "expected_cwe": "CWE-653",
+      "title": "CWE-653: Improper Isolation or Compartmentalization",
+      "severity": "High",
+      "location": {
+        "file": "llm/kubernetes/0e40b4cab0b242b78c2fc77ed1361822.yaml",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "Pod shares the host PID, IPC and network namespaces, breaking container/host isolation.",
+      "status": "open",
+      "source": "static/CWE-653/kubernetes/vulnerable.yaml"
+    },
+    {
+      "id": "GP-IAC-010",
+      "analysis": "static",
+      "scanner_types": [
+        "IAC"
+      ],
+      "language": "kubernetes",
+      "cwe": [
+        {
+          "id": "CWE-668",
+          "name": "Exposure of Resource to Wrong Sphere"
+        }
+      ],
+      "expected_cwe": "CWE-668",
+      "title": "CWE-668: Exposure of Resource to Wrong Sphere",
+      "severity": "High",
+      "location": {
+        "file": "llm/kubernetes/7a1adf8d22b745219e807842ad303324.yaml",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "Pod mounts the host /etc directory via hostPath, exposing host configuration to the container.",
+      "status": "open",
+      "source": "static/CWE-668/kubernetes/vulnerable.yaml"
+    },
+    {
+      "id": "GP-IAC-011",
+      "analysis": "static",
+      "scanner_types": [
+        "IAC"
+      ],
+      "language": "ansible",
+      "cwe": [
+        {
+          "id": "CWE-732",
+          "name": "Incorrect Permission Assignment for Critical Resource"
+        }
+      ],
+      "expected_cwe": "CWE-732",
+      "title": "CWE-732: Incorrect Permission Assignment for Critical Resource",
+      "severity": "High",
+      "location": {
+        "file": "llm/ansible/db4314d7ed5e49a5965a3065da13c66b.yml",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "A file is created with world-writable permissions (0777), allowing any user to modify it.",
+      "status": "open",
+      "source": "static/CWE-732/ansible/vulnerable.yml"
+    },
+    {
+      "id": "GP-IAC-012",
+      "analysis": "static",
+      "scanner_types": [
+        "IAC"
+      ],
+      "language": "terraform",
+      "cwe": [
+        {
+          "id": "CWE-732",
+          "name": "Incorrect Permission Assignment for Critical Resource"
+        }
+      ],
+      "expected_cwe": "CWE-732",
+      "title": "CWE-732: Incorrect Permission Assignment for Critical Resource",
+      "severity": "High",
+      "location": {
+        "file": "llm/terraform/cd40c77ac47049738698130781eade4b.tf",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "IAM policy grants all actions on all resources (wildcard admin), violating least privilege.",
+      "status": "open",
+      "source": "static/CWE-732/terraform/vulnerable.tf"
+    },
+    {
+      "id": "GP-IAC-013",
+      "analysis": "static",
+      "scanner_types": [
+        "IAC"
+      ],
+      "language": "terraform",
+      "cwe": [
+        {
+          "id": "CWE-778",
+          "name": "Insufficient Logging"
+        }
+      ],
+      "expected_cwe": "CWE-778",
+      "title": "CWE-778: Insufficient Logging",
+      "severity": "Low",
+      "location": {
+        "file": "llm/terraform/b771430147e549abbed4b0102594abf0.tf",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "CloudTrail has log file validation disabled and the S3 bucket has no access logging configured.",
+      "status": "open",
+      "source": "static/CWE-778/terraform/vulnerable.tf"
+    },
+    {
+      "id": "GP-IAC-014",
+      "analysis": "static",
+      "scanner_types": [
+        "IAC"
+      ],
+      "language": "ansible",
+      "cwe": [
+        {
+          "id": "CWE-78",
+          "name": "Improper Neutralization of Special Elements used in an OS Command (OS Command Injection)"
+        }
+      ],
+      "expected_cwe": "CWE-78",
+      "title": "CWE-78: Improper Neutralization of Special Elements used in an OS Command (Command Injection)",
+      "severity": "Critical",
+      "location": {
+        "file": "llm/ansible/54f7e198655f4848bb9e5a9ba0515707.yml",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "The shell task interpolates an unsanitized user-controlled variable directly into a command.",
+      "status": "open",
+      "source": "static/CWE-78/ansible/vulnerable.yml"
+    },
+    {
+      "id": "GP-SAST-042",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "c",
+      "cwe": [
+        {
+          "id": "CWE-78",
+          "name": "Improper Neutralization of Special Elements used in an OS Command (OS Command Injection)"
+        }
+      ],
+      "expected_cwe": "CWE-78",
+      "title": "CWE-78: Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection')",
+      "severity": "Critical",
+      "location": {
+        "file": "llm/c/d7b366d9c2ea4b17993992e88f733aba.c",
+        "start_line": 1,
+        "snippet": "system()"
+      },
+      "patched": null,
+      "description": "A shell command string is built from untrusted argv and executed.",
+      "status": "open",
+      "source": "static/CWE-78/c/vulnerable.c"
+    },
+    {
+      "id": "GP-SAST-043",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "cpp",
+      "cwe": [
+        {
+          "id": "CWE-78",
+          "name": "Improper Neutralization of Special Elements used in an OS Command (OS Command Injection)"
+        }
+      ],
+      "expected_cwe": "CWE-78",
+      "title": "CWE-78: Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection')",
+      "severity": "Critical",
+      "location": {
+        "file": "llm/cpp/f41bcf7886494b4bb1eedd5af3d1549b.cpp",
+        "start_line": 1,
+        "snippet": "system()"
+      },
+      "patched": null,
+      "description": "Builds a shell command string from attacker-controlled argv and runs it via the shell.",
+      "status": "open",
+      "source": "static/CWE-78/cpp/vulnerable.cpp"
+    },
+    {
+      "id": "GP-SAST-044",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "csharp",
+      "cwe": [
+        {
+          "id": "CWE-78",
+          "name": "Improper Neutralization of Special Elements used in an OS Command (OS Command Injection)"
+        }
+      ],
+      "expected_cwe": "CWE-78",
+      "title": "CWE-78: Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection')",
+      "severity": "Critical",
+      "location": {
+        "file": "llm/csharp/29b3423686a64de699bc1ff5e5857529.cs",
+        "start_line": 1,
+        "snippet": "Process.Start(\"cmd.exe\", \"/c \" + userInput)"
+      },
+      "patched": null,
+      "description": "User input is appended to a shell command and executed by the OS.",
+      "status": "open",
+      "source": "static/CWE-78/csharp/vulnerable.cs"
+    },
+    {
+      "id": "GP-SAST-045",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "java",
+      "cwe": [
+        {
+          "id": "CWE-78",
+          "name": "Improper Neutralization of Special Elements used in an OS Command (OS Command Injection)"
+        }
+      ],
+      "expected_cwe": "CWE-78",
+      "title": "CWE-78: OS Command Injection",
+      "severity": "Critical",
+      "location": {
+        "file": "llm/java/6174fe36e79f45aa8eb5cc461120f9bd.java",
+        "start_line": 1,
+        "snippet": "Runtime.getRuntime().exec(userInput)"
+      },
+      "patched": null,
+      "description": "User-controlled input is passed unsanitized to an OS command execution call.",
+      "status": "open",
+      "source": "static/CWE-78/java/vulnerable.java"
+    },
+    {
+      "id": "GP-SAST-046",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "javascript",
+      "cwe": [
+        {
+          "id": "CWE-78",
+          "name": "Improper Neutralization of Special Elements used in an OS Command (OS Command Injection)"
+        }
+      ],
+      "expected_cwe": "CWE-78",
+      "title": "CWE-78: Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection')",
+      "severity": "Critical",
+      "location": {
+        "file": "llm/javascript/107cca19294447a990f29391a811debe.js",
+        "start_line": 1,
+        "snippet": "child_process.exec(`ping -c 1 ${req.query.host}`)"
+      },
+      "patched": null,
+      "description": "Untrusted request input is interpolated into a shell command executed by the OS.",
+      "status": "open",
+      "source": "static/CWE-78/javascript/vulnerable.js"
+    },
+    {
+      "id": "GP-SAST-047",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "python",
+      "cwe": [
+        {
+          "id": "CWE-78",
+          "name": "Improper Neutralization of Special Elements used in an OS Command (OS Command Injection)"
+        }
+      ],
+      "expected_cwe": "CWE-78",
+      "title": "CWE-78: OS Command Injection",
+      "severity": "Critical",
+      "location": {
+        "file": "llm/python/1f55586f33214d0db593cbca904f0e00.py",
+        "start_line": 1,
+        "snippet": "subprocess.call(cmd, shell=True)"
+      },
+      "patched": null,
+      "description": "User-controlled request data is passed into a shell command.",
+      "status": "open",
+      "source": "static/CWE-78/python/vulnerable.py"
+    },
+    {
+      "id": "GP-SAST-048",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "c",
+      "cwe": [
+        {
+          "id": "CWE-787",
+          "name": "Out-of-bounds Write"
+        }
+      ],
+      "expected_cwe": "CWE-787",
+      "title": "CWE-787: Out-of-bounds Write",
+      "severity": "High",
+      "location": {
+        "file": "llm/c/028fedc62720437bbe057887d9d72933.c",
+        "start_line": 1,
+        "snippet": "array[index] = value with unchecked index"
+      },
+      "patched": null,
+      "description": "An attacker-controlled index is used to write past the end of a fixed array.",
+      "status": "open",
+      "source": "static/CWE-787/c/vulnerable.c"
+    },
+    {
+      "id": "GP-SAST-049",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "java",
+      "cwe": [
+        {
+          "id": "CWE-79",
+          "name": "Improper Neutralization of Input During Web Page Generation (Cross-site Scripting)"
+        }
+      ],
+      "expected_cwe": "CWE-79",
+      "title": "CWE-79: Improper Neutralization of Input During Web Page Generation (XSS)",
+      "severity": "High",
+      "location": {
+        "file": "llm/java/ba367909255440b3ada20d2c4a6e5c86.java",
+        "start_line": 1,
+        "snippet": "HttpServletResponse.getWriter().println(request.getParameter(...))"
+      },
+      "patched": null,
+      "description": "User-supplied request parameter is written into the HTTP response without encoding.",
+      "status": "open",
+      "source": "static/CWE-79/java/vulnerable.java"
+    },
+    {
+      "id": "GP-SAST-050",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "javascript",
+      "cwe": [
+        {
+          "id": "CWE-79",
+          "name": "Improper Neutralization of Input During Web Page Generation (Cross-site Scripting)"
+        }
+      ],
+      "expected_cwe": "CWE-79",
+      "title": "CWE-79: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')",
+      "severity": "High",
+      "location": {
+        "file": "llm/javascript/389fc2df447b46238c43f17f270c7d9b.js",
+        "start_line": 1,
+        "snippet": "res.send(`<h1>Hello ${req.query.name}</h1>`)"
+      },
+      "patched": null,
+      "description": "Untrusted request input is reflected into an HTML response without escaping.",
+      "status": "open",
+      "source": "static/CWE-79/javascript/vulnerable.js"
+    },
+    {
+      "id": "GP-SAST-051",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "python",
+      "cwe": [
+        {
+          "id": "CWE-79",
+          "name": "Improper Neutralization of Input During Web Page Generation (Cross-site Scripting)"
+        }
+      ],
+      "expected_cwe": "CWE-79",
+      "title": "CWE-79: Cross-site Scripting (XSS)",
+      "severity": "High",
+      "location": {
+        "file": "llm/python/e7ef8a28b18d443f9c1c9613b98c51f9.py",
+        "start_line": 1,
+        "snippet": "render_template_string() / HTML string concatenation with request input"
+      },
+      "patched": null,
+      "description": "User input is concatenated into an HTML response without escaping.",
+      "status": "open",
+      "source": "static/CWE-79/python/vulnerable.py"
+    },
+    {
+      "id": "GP-IAC-015",
+      "analysis": "static",
+      "scanner_types": [
+        "IAC",
+        "SECRET"
+      ],
+      "language": "ansible",
+      "cwe": [
+        {
+          "id": "CWE-798",
+          "name": "Use of Hard-coded Credentials"
+        }
+      ],
+      "expected_cwe": "CWE-798",
+      "title": "CWE-798: Use of Hard-coded Credentials",
+      "severity": "High",
+      "location": {
+        "file": "llm/ansible/518e255a1d7445a4804eff0ca39b1f1c.yml",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "A task authenticates using a hard-coded API token literal embedded in the playbook.",
+      "status": "open",
+      "source": "static/CWE-798/ansible/vulnerable.yml"
+    },
+    {
+      "id": "GP-SECRET-002",
+      "analysis": "static",
+      "scanner_types": [
+        "SECRET"
+      ],
+      "language": "conf",
+      "cwe": [
+        {
+          "id": "CWE-798",
+          "name": "Use of Hard-coded Credentials"
+        }
+      ],
+      "expected_cwe": "CWE-798",
+      "title": "CWE-798: Use of Hard-coded Credentials",
+      "severity": "High",
+      "location": {
+        "file": "llm/conf/f33bd4c030f143fa8a6c3dc5729f4e1e.conf",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "API tokens and passwords stored in cleartext in a config file.",
+      "status": "open",
+      "source": "static/CWE-798/conf/vulnerable.conf"
+    },
+    {
+      "id": "GP-SAST-052",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST",
+        "SECRET"
+      ],
+      "language": "csharp",
+      "cwe": [
+        {
+          "id": "CWE-798",
+          "name": "Use of Hard-coded Credentials"
+        }
+      ],
+      "expected_cwe": "CWE-798",
+      "title": "CWE-798: Use of Hard-coded Credentials",
+      "severity": "High",
+      "location": {
+        "file": "llm/csharp/2503202f04bb49d7a8112d44d9501001.cs",
+        "start_line": 1,
+        "snippet": "new SqlConnection(\"...Password=<hardcoded>\")"
+      },
+      "patched": null,
+      "description": "A hard-coded database password is embedded in the connection string.",
+      "status": "open",
+      "source": "static/CWE-798/csharp/vulnerable.cs"
+    },
+    {
+      "id": "GP-SECRET-003",
+      "analysis": "static",
+      "scanner_types": [
+        "SECRET"
+      ],
+      "language": "env",
+      "cwe": [
+        {
+          "id": "CWE-798",
+          "name": "Use of Hard-coded Credentials"
+        }
+      ],
+      "expected_cwe": "CWE-798",
+      "title": "CWE-798: Use of Hard-coded Credentials",
+      "severity": "High",
+      "location": {
+        "file": "llm/env/1c92486a080e4600a6cfb25bac1abf2a.env",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "Secrets committed in cleartext in an environment file (detectable by secret scanners).",
+      "status": "open",
+      "source": "static/CWE-798/env/vulnerable.env"
+    },
+    {
+      "id": "GP-SECRET-004",
+      "analysis": "static",
+      "scanner_types": [
+        "SECRET"
+      ],
+      "language": "ini",
+      "cwe": [
+        {
+          "id": "CWE-798",
+          "name": "Use of Hard-coded Credentials"
+        }
+      ],
+      "expected_cwe": "CWE-798",
+      "title": "CWE-798: Use of Hard-coded Credentials",
+      "severity": "High",
+      "location": {
+        "file": "llm/ini/4d9520af063643f8a044a3039406300b.ini",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "Plaintext passwords and an AWS secret key stored in an INI config file.",
+      "status": "open",
+      "source": "static/CWE-798/ini/vulnerable.ini"
+    },
+    {
+      "id": "GP-SAST-053",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST",
+        "SECRET"
+      ],
+      "language": "java",
+      "cwe": [
+        {
+          "id": "CWE-798",
+          "name": "Use of Hard-coded Credentials"
+        }
+      ],
+      "expected_cwe": "CWE-798",
+      "title": "CWE-798: Use of Hard-coded Credentials",
+      "severity": "High",
+      "location": {
+        "file": "llm/java/45ad974acdf540619152096dc133407e.java",
+        "start_line": 1,
+        "snippet": "DriverManager.getConnection(url, user, \"hardcodedPassword\")"
+      },
+      "patched": null,
+      "description": "A hard-coded database password is embedded in source and used to authenticate.",
+      "status": "open",
+      "source": "static/CWE-798/java/vulnerable.java"
+    },
+    {
+      "id": "GP-SAST-054",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST",
+        "SECRET"
+      ],
+      "language": "javascript",
+      "cwe": [
+        {
+          "id": "CWE-798",
+          "name": "Use of Hard-coded Credentials"
+        }
+      ],
+      "expected_cwe": "CWE-798",
+      "title": "CWE-798: Use of Hard-coded Credentials",
+      "severity": "High",
+      "location": {
+        "file": "llm/javascript/3344ea9500bd45d089443f025e61f259.js",
+        "start_line": 1,
+        "snippet": "jwt.sign(payload, 'hardcoded-secret-key')"
+      },
+      "patched": null,
+      "description": "A hard-coded secret key is used to sign and verify JWT tokens.",
+      "status": "open",
+      "source": "static/CWE-798/javascript/vulnerable.js"
+    },
+    {
+      "id": "GP-SAST-055",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST",
+        "SECRET"
+      ],
+      "language": "python",
+      "cwe": [
+        {
+          "id": "CWE-798",
+          "name": "Use of Hard-coded Credentials"
+        }
+      ],
+      "expected_cwe": "CWE-798",
+      "title": "CWE-798: Use of Hard-coded Credentials",
+      "severity": "High",
+      "location": {
+        "file": "llm/python/78d1953abefc493a88d08603753da5ed.py",
+        "start_line": 1,
+        "snippet": "hard-coded credential literals used in authentication"
+      },
+      "patched": null,
+      "description": "A hard-coded password and API key are embedded in source and used to authenticate.",
+      "status": "open",
+      "source": "static/CWE-798/python/vulnerable.py"
+    },
+    {
+      "id": "GP-IAC-016",
+      "analysis": "static",
+      "scanner_types": [
+        "IAC",
+        "SECRET"
+      ],
+      "language": "terraform",
+      "cwe": [
+        {
+          "id": "CWE-798",
+          "name": "Use of Hard-coded Credentials"
+        }
+      ],
+      "expected_cwe": "CWE-798",
+      "title": "CWE-798: Use of Hard-coded Credentials",
+      "severity": "High",
+      "location": {
+        "file": "llm/terraform/764bc49961c84cb3a13b00669f4390c4.tf",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "AWS provider is configured with hard-coded access and secret keys committed in source.",
+      "status": "open",
+      "source": "static/CWE-798/terraform/vulnerable.tf"
+    },
+    {
+      "id": "GP-PIPELINE-004",
+      "analysis": "static",
+      "scanner_types": [
+        "PIPELINE"
+      ],
+      "language": "github",
+      "cwe": [
+        {
+          "id": "CWE-829",
+          "name": "Inclusion of Functionality from Untrusted Control Sphere"
+        }
+      ],
+      "expected_cwe": "CWE-829",
+      "title": "CWE-829: Inclusion of Functionality from Untrusted Control Sphere",
+      "severity": "Medium",
+      "location": {
+        "file": "llm/github/98975b7da967484aa4280097bf7c465a.yml",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "Third-party and official actions are pinned to mutable tags/branches instead of immutable commit SHAs.",
+      "status": "open",
+      "source": "static/CWE-829/github/vulnerable.yml"
+    },
+    {
+      "id": "GP-PIPELINE-005",
+      "analysis": "static",
+      "scanner_types": [
+        "PIPELINE"
+      ],
+      "language": "gitlab",
+      "cwe": [
+        {
+          "id": "CWE-829",
+          "name": "Inclusion of Functionality from Untrusted Control Sphere"
+        }
+      ],
+      "expected_cwe": "CWE-829",
+      "title": "CWE-829: Inclusion of Functionality from Untrusted Control Sphere",
+      "severity": "Medium",
+      "location": {
+        "file": "llm/gitlab/6cff55c737a34dbf884cd5ea2b0801fc.yml",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "The job uses a mutable image tag (node:latest) with no digest, so the pulled code is not pinned.",
+      "status": "open",
+      "source": "static/CWE-829/gitlab/vulnerable.yml"
+    },
+    {
+      "id": "GP-SAST-056",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "csharp",
+      "cwe": [
+        {
+          "id": "CWE-89",
+          "name": "Improper Neutralization of Special Elements used in an SQL Command (SQL Injection)"
+        }
+      ],
+      "expected_cwe": "CWE-89",
+      "title": "CWE-89: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')",
+      "severity": "Critical",
+      "location": {
+        "file": "llm/csharp/bd63a00989b846b0942274d4e85186ec.cs",
+        "start_line": 1,
+        "snippet": "new SqlCommand(query, conn) where query = \"... \" + userInput"
+      },
+      "patched": null,
+      "description": "User input is concatenated directly into a SQL query string and executed.",
+      "status": "open",
+      "source": "static/CWE-89/csharp/vulnerable.cs"
+    },
+    {
+      "id": "GP-SAST-057",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "java",
+      "cwe": [
+        {
+          "id": "CWE-89",
+          "name": "Improper Neutralization of Special Elements used in an SQL Command (SQL Injection)"
+        }
+      ],
+      "expected_cwe": "CWE-89",
+      "title": "CWE-89: SQL Injection",
+      "severity": "Critical",
+      "location": {
+        "file": "llm/java/827920eb20e54f1bbbad501e72961cd7.java",
+        "start_line": 1,
+        "snippet": "Statement.executeQuery(concatenatedQuery)"
+      },
+      "patched": null,
+      "description": "User-controlled input is concatenated directly into a SQL query string.",
+      "status": "open",
+      "source": "static/CWE-89/java/vulnerable.java"
+    },
+    {
+      "id": "GP-SAST-058",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "javascript",
+      "cwe": [
+        {
+          "id": "CWE-89",
+          "name": "Improper Neutralization of Special Elements used in an SQL Command (SQL Injection)"
+        }
+      ],
+      "expected_cwe": "CWE-89",
+      "title": "CWE-89: SQL Injection",
+      "severity": "Critical",
+      "location": {
+        "file": "llm/javascript/f75e4d6c7ce5412791771d5e2b8b9c2c.js",
+        "start_line": 1,
+        "snippet": "connection.query(`... ${req.params.id}`)"
+      },
+      "patched": null,
+      "description": "Untrusted request input is concatenated directly into a SQL query string.",
+      "status": "open",
+      "source": "static/CWE-89/javascript/vulnerable.js"
+    },
+    {
+      "id": "GP-SAST-059",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "python",
+      "cwe": [
+        {
+          "id": "CWE-89",
+          "name": "Improper Neutralization of Special Elements used in an SQL Command (SQL Injection)"
+        }
+      ],
+      "expected_cwe": "CWE-89",
+      "title": "CWE-89: SQL Injection",
+      "severity": "Critical",
+      "location": {
+        "file": "llm/python/9c42366f0c95481a9fa4e0cb84fa6698.py",
+        "start_line": 1,
+        "snippet": "cursor.execute() with a string-formatted query"
+      },
+      "patched": null,
+      "description": "User-controlled request data is concatenated directly into a SQL query string.",
+      "status": "open",
+      "source": "static/CWE-89/python/vulnerable.py"
+    },
+    {
+      "id": "GP-SAST-060",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "java",
+      "cwe": [
+        {
+          "id": "CWE-90",
+          "name": "Improper Neutralization of Special Elements used in an LDAP Query (LDAP Injection)"
+        }
+      ],
+      "expected_cwe": "CWE-90",
+      "title": "CWE-90: LDAP Injection",
+      "severity": "High",
+      "location": {
+        "file": "llm/java/87784ecf40f542a09f99fc1ef5e7c5ed.java",
+        "start_line": 1,
+        "snippet": "DirContext.search(base, filterWithUserInput, controls)"
+      },
+      "patched": null,
+      "description": "User input is concatenated into an LDAP search filter without escaping.",
+      "status": "open",
+      "source": "static/CWE-90/java/vulnerable.java"
+    },
+    {
+      "id": "GP-SAST-061",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "python",
+      "cwe": [
+        {
+          "id": "CWE-918",
+          "name": "Server-Side Request Forgery (SSRF)"
+        }
+      ],
+      "expected_cwe": "CWE-918",
+      "title": "CWE-918: Server-Side Request Forgery (SSRF)",
+      "severity": "High",
+      "location": {
+        "file": "llm/python/0003634462a2406db7894aaaa2995fa7.py",
+        "start_line": 1,
+        "snippet": "requests.get() with a request-supplied URL"
+      },
+      "patched": null,
+      "description": "A server-side HTTP request is made to a URL fully controlled by the user.",
+      "status": "open",
+      "source": "static/CWE-918/python/vulnerable.py"
+    },
+    {
+      "id": "GP-SAST-062",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "csharp",
+      "cwe": [
+        {
+          "id": "CWE-94",
+          "name": "Improper Control of Generation of Code (Code Injection)"
+        }
+      ],
+      "expected_cwe": "CWE-94",
+      "title": "CWE-94: Improper Control of Generation of Code ('Code Injection')",
+      "severity": "Critical",
+      "location": {
+        "file": "llm/csharp/3f3bf9f3be6f4ea9b80653eb06d6530d.cs",
+        "start_line": 1,
+        "snippet": "CSharpCodeProvider.CompileAssemblyFromSource on source built from userInput"
+      },
+      "patched": null,
+      "description": "User input is embedded into C source which is then compiled and executed at runtime.",
+      "status": "open",
+      "source": "static/CWE-94/csharp/vulnerable.cs"
+    },
+    {
+      "id": "GP-PIPELINE-006",
+      "analysis": "static",
+      "scanner_types": [
+        "PIPELINE"
+      ],
+      "language": "github",
+      "cwe": [
+        {
+          "id": "CWE-94",
+          "name": "Improper Control of Generation of Code (Code Injection)"
+        }
+      ],
+      "expected_cwe": "CWE-94",
+      "title": "CWE-94: Improper Control of Generation of Code (Code Injection)",
+      "severity": "Critical",
+      "location": {
+        "file": "llm/github/4dcfa866ca6c423489b3ad528e88b7c1.yml",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "Untrusted issue/PR title is interpolated directly into a shell command, allowing script injection.",
+      "status": "open",
+      "source": "static/CWE-94/github/vulnerable.yml"
+    },
+    {
+      "id": "GP-PIPELINE-007",
+      "analysis": "static",
+      "scanner_types": [
+        "PIPELINE"
+      ],
+      "language": "gitlab",
+      "cwe": [
+        {
+          "id": "CWE-94",
+          "name": "Improper Control of Generation of Code (Code Injection)"
+        }
+      ],
+      "expected_cwe": "CWE-94",
+      "title": "CWE-94: Improper Control of Generation of Code (Code Injection)",
+      "severity": "Critical",
+      "location": {
+        "file": "llm/gitlab/2d190923d0784efbb7108c8b2ffe841e.yml",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "An untrusted CI variable is interpolated and evaluated in a shell command, allowing code injection.",
+      "status": "open",
+      "source": "static/CWE-94/gitlab/vulnerable.yml"
+    },
+    {
+      "id": "GP-SAST-063",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "javascript",
+      "cwe": [
+        {
+          "id": "CWE-94",
+          "name": "Improper Control of Generation of Code (Code Injection)"
+        }
+      ],
+      "expected_cwe": "CWE-94",
+      "title": "CWE-94: Improper Control of Generation of Code ('Code Injection')",
+      "severity": "Critical",
+      "location": {
+        "file": "llm/javascript/0dcb24fb821144d09fb8b2a93a53cc02.js",
+        "start_line": 1,
+        "snippet": "eval(req.query.expr)"
+      },
+      "patched": null,
+      "description": "Untrusted request input is passed directly to eval() and executed as code.",
+      "status": "open",
+      "source": "static/CWE-94/javascript/vulnerable.js"
+    },
+    {
+      "id": "GP-SAST-064",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "python",
+      "cwe": [
+        {
+          "id": "CWE-94",
+          "name": "Improper Control of Generation of Code (Code Injection)"
+        }
+      ],
+      "expected_cwe": "CWE-94",
+      "title": "CWE-94: Code Injection",
+      "severity": "Critical",
+      "location": {
+        "file": "llm/python/63e024acd44747879894d4e7dbd2d16a.py",
+        "start_line": 1,
+        "snippet": "eval()"
+      },
+      "patched": null,
+      "description": "User-supplied input is evaluated as Python code.",
+      "status": "open",
+      "source": "static/CWE-94/python/vulnerable.py"
+    },
+    {
+      "id": "GP-SCA-001",
+      "analysis": "static",
+      "scanner_types": [
+        "SCA"
+      ],
+      "language": "python",
+      "cwe": [
+        {
+          "id": "CWE-1395",
+          "name": "Dependency on Vulnerable Third-Party Component"
+        }
+      ],
+      "expected_cwe": "CWE-1395",
+      "title": "CWE-1395: vulnerable python dependencies",
+      "severity": "High",
+      "location": {
+        "file": "llm/python/b4e31554bce148858e64e791842e727c.toml",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "Django 3.0.1 and other Python packages with known CVEs.",
+      "status": "open",
+      "source": "pipeline/sca/python/Pipfile"
+    },
+    {
+      "id": "GP-SCA-002",
+      "analysis": "static",
+      "scanner_types": [
+        "SCA"
+      ],
+      "language": "ruby",
+      "cwe": [
+        {
+          "id": "CWE-1395",
+          "name": "Dependency on Vulnerable Third-Party Component"
+        }
+      ],
+      "expected_cwe": "CWE-1395",
+      "title": "CWE-1395: vulnerable ruby dependencies",
+      "severity": "High",
+      "location": {
+        "file": "llm/ruby/797f777f27654912ae6f537057c37847.rb",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "rails 6.1.4 / devise with known CVEs.",
+      "status": "open",
+      "source": "pipeline/sca/ruby/Gemfile"
+    },
+    {
+      "id": "GP-SCA-003",
+      "analysis": "static",
+      "scanner_types": [
+        "SCA"
+      ],
+      "language": "node",
+      "cwe": [
+        {
+          "id": "CWE-1395",
+          "name": "Dependency on Vulnerable Third-Party Component"
+        }
+      ],
+      "expected_cwe": "CWE-1395",
+      "title": "CWE-1395: vulnerable node dependencies",
+      "severity": "High",
+      "location": {
+        "file": "llm/node/55bcea6b103f49caa2dd1c77b742c4c4.json",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "lodash, minimist, express, axios, node-serialize with known CVEs.",
+      "status": "open",
+      "source": "pipeline/sca/node/package.json"
+    },
+    {
+      "id": "GP-SCA-004",
+      "analysis": "static",
+      "scanner_types": [
+        "SCA"
+      ],
+      "language": "java",
+      "cwe": [
+        {
+          "id": "CWE-1395",
+          "name": "Dependency on Vulnerable Third-Party Component"
+        }
+      ],
+      "expected_cwe": "CWE-1395",
+      "title": "CWE-1395: vulnerable java dependencies",
+      "severity": "High",
+      "location": {
+        "file": "llm/java/f7f85182348844478cb5d9f26fee4582.xml",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "log4j-core 2.14.1 (Log4Shell), jackson-databind, spring-web, snakeyaml.",
+      "status": "open",
+      "source": "pipeline/sca/java/pom.xml"
+    },
+    {
+      "id": "GP-PIPELINE-008",
+      "analysis": "static",
+      "scanner_types": [
+        "PIPELINE"
+      ],
+      "language": "github",
+      "cwe": [
+        {
+          "id": "CWE-94",
+          "name": "Improper Control of Generation of Code (Code Injection)"
+        }
+      ],
+      "expected_cwe": "CWE-94",
+      "title": "CWE-94: Improper Control of Generation of Code (Code Injection)",
+      "severity": "Critical",
+      "location": {
+        "file": "llm/github/17dee3a34dd04cca9e9462972bbe562f.yml",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "Insecure CI/CD configuration (github) exhibiting CWE-94.",
+      "status": "open",
+      "source": "pipeline/ci/github/.github/workflows/ci.yml"
+    },
+    {
+      "id": "GP-PIPELINE-009",
+      "analysis": "static",
+      "scanner_types": [
+        "PIPELINE"
+      ],
+      "language": "github",
+      "cwe": [
+        {
+          "id": "CWE-250",
+          "name": "Execution with Unnecessary Privileges"
+        }
+      ],
+      "expected_cwe": "CWE-250",
+      "title": "CWE-250: Execution with Unnecessary Privileges",
+      "severity": "Medium",
+      "location": {
+        "file": "llm/github/17dee3a34dd04cca9e9462972bbe562f.yml",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "Insecure CI/CD configuration (github) exhibiting CWE-250.",
+      "status": "open",
+      "source": "pipeline/ci/github/.github/workflows/ci.yml"
+    },
+    {
+      "id": "GP-PIPELINE-010",
+      "analysis": "static",
+      "scanner_types": [
+        "PIPELINE"
+      ],
+      "language": "github",
+      "cwe": [
+        {
+          "id": "CWE-494",
+          "name": "Download of Code Without Integrity Check"
+        }
+      ],
+      "expected_cwe": "CWE-494",
+      "title": "CWE-494: Download of Code Without Integrity Check",
+      "severity": "High",
+      "location": {
+        "file": "llm/github/17dee3a34dd04cca9e9462972bbe562f.yml",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "Insecure CI/CD configuration (github) exhibiting CWE-494.",
+      "status": "open",
+      "source": "pipeline/ci/github/.github/workflows/ci.yml"
+    },
+    {
+      "id": "GP-PIPELINE-011",
+      "analysis": "static",
+      "scanner_types": [
+        "PIPELINE"
+      ],
+      "language": "github",
+      "cwe": [
+        {
+          "id": "CWE-829",
+          "name": "Inclusion of Functionality from Untrusted Control Sphere"
+        }
+      ],
+      "expected_cwe": "CWE-829",
+      "title": "CWE-829: Inclusion of Functionality from Untrusted Control Sphere",
+      "severity": "Medium",
+      "location": {
+        "file": "llm/github/17dee3a34dd04cca9e9462972bbe562f.yml",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "Insecure CI/CD configuration (github) exhibiting CWE-829.",
+      "status": "open",
+      "source": "pipeline/ci/github/.github/workflows/ci.yml"
+    },
+    {
+      "id": "GP-PIPELINE-012",
+      "analysis": "static",
+      "scanner_types": [
+        "PIPELINE"
+      ],
+      "language": "gitlab",
+      "cwe": [
+        {
+          "id": "CWE-94",
+          "name": "Improper Control of Generation of Code (Code Injection)"
+        }
+      ],
+      "expected_cwe": "CWE-94",
+      "title": "CWE-94: Improper Control of Generation of Code (Code Injection)",
+      "severity": "Critical",
+      "location": {
+        "file": "llm/gitlab/641a4dd8b21c41ae8ad42bd37ff2b9db.yml",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "Insecure CI/CD configuration (gitlab) exhibiting CWE-94.",
+      "status": "open",
+      "source": "pipeline/ci/gitlab/.gitlab-ci.yml"
+    },
+    {
+      "id": "GP-PIPELINE-013",
+      "analysis": "static",
+      "scanner_types": [
+        "PIPELINE"
+      ],
+      "language": "gitlab",
+      "cwe": [
+        {
+          "id": "CWE-494",
+          "name": "Download of Code Without Integrity Check"
+        }
+      ],
+      "expected_cwe": "CWE-494",
+      "title": "CWE-494: Download of Code Without Integrity Check",
+      "severity": "High",
+      "location": {
+        "file": "llm/gitlab/641a4dd8b21c41ae8ad42bd37ff2b9db.yml",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "Insecure CI/CD configuration (gitlab) exhibiting CWE-494.",
+      "status": "open",
+      "source": "pipeline/ci/gitlab/.gitlab-ci.yml"
+    },
+    {
+      "id": "GP-PIPELINE-014",
+      "analysis": "static",
+      "scanner_types": [
+        "PIPELINE"
+      ],
+      "language": "gitlab",
+      "cwe": [
+        {
+          "id": "CWE-532",
+          "name": "Insertion of Sensitive Information into Log File"
+        }
+      ],
+      "expected_cwe": "CWE-532",
+      "title": "CWE-532: Insertion of Sensitive Information into Log File",
+      "severity": "Medium",
+      "location": {
+        "file": "llm/gitlab/641a4dd8b21c41ae8ad42bd37ff2b9db.yml",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "Insecure CI/CD configuration (gitlab) exhibiting CWE-532.",
+      "status": "open",
+      "source": "pipeline/ci/gitlab/.gitlab-ci.yml"
+    },
+    {
+      "id": "GP-PIPELINE-015",
+      "analysis": "static",
+      "scanner_types": [
+        "PIPELINE"
+      ],
+      "language": "gitlab",
+      "cwe": [
+        {
+          "id": "CWE-829",
+          "name": "Inclusion of Functionality from Untrusted Control Sphere"
+        }
+      ],
+      "expected_cwe": "CWE-829",
+      "title": "CWE-829: Inclusion of Functionality from Untrusted Control Sphere",
+      "severity": "Medium",
+      "location": {
+        "file": "llm/gitlab/641a4dd8b21c41ae8ad42bd37ff2b9db.yml",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "Insecure CI/CD configuration (gitlab) exhibiting CWE-829.",
+      "status": "open",
+      "source": "pipeline/ci/gitlab/.gitlab-ci.yml"
+    },
+    {
+      "id": "GP-DAST-001",
+      "analysis": "dynamic",
+      "scanner_types": [
+        "DAST"
+      ],
+      "language": "http",
+      "cwe": [
+        {
+          "id": "CWE-79",
+          "name": "Improper Neutralization of Input During Web Page Generation (Cross-site Scripting)"
+        }
+      ],
+      "expected_cwe": "CWE-79",
+      "title": "CWE-79: Reflected search (echoes the query into HTML)",
+      "severity": "High",
+      "location": {
+        "file": "llm/http/e3582e93bb484d9bae302caf53f70326.js",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "Reflected Cross-Site Scripting \u2014 `q` is reflected unescaped.",
+      "status": "open",
+      "source": "dynamic/app.js"
+    },
+    {
+      "id": "GP-DAST-002",
+      "analysis": "dynamic",
+      "scanner_types": [
+        "DAST"
+      ],
+      "language": "http",
+      "cwe": [
+        {
+          "id": "CWE-89",
+          "name": "Improper Neutralization of Special Elements used in an SQL Command (SQL Injection)"
+        }
+      ],
+      "expected_cwe": "CWE-89",
+      "title": "CWE-89: Login (string-concatenated SQL)",
+      "severity": "Critical",
+      "location": {
+        "file": "llm/http/e3582e93bb484d9bae302caf53f70326.js",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "SQL Injection via username/password; also CWE-209 (verbose SQL errors).",
+      "status": "open",
+      "source": "dynamic/app.js"
+    },
+    {
+      "id": "GP-DAST-003",
+      "analysis": "dynamic",
+      "scanner_types": [
+        "DAST"
+      ],
+      "language": "http",
+      "cwe": [
+        {
+          "id": "CWE-89",
+          "name": "Improper Neutralization of Special Elements used in an SQL Command (SQL Injection)"
+        }
+      ],
+      "expected_cwe": "CWE-89",
+      "title": "CWE-89: Lookup user by id (string-concatenated SQL)",
+      "severity": "Critical",
+      "location": {
+        "file": "llm/http/e3582e93bb484d9bae302caf53f70326.js",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "SQL Injection via `id`.",
+      "status": "open",
+      "source": "dynamic/app.js"
+    },
+    {
+      "id": "GP-DAST-004",
+      "analysis": "dynamic",
+      "scanner_types": [
+        "DAST"
+      ],
+      "language": "http",
+      "cwe": [
+        {
+          "id": "CWE-78",
+          "name": "Improper Neutralization of Special Elements used in an OS Command (OS Command Injection)"
+        }
+      ],
+      "expected_cwe": "CWE-78",
+      "title": "CWE-78: Ping a host (shell command)",
+      "severity": "Critical",
+      "location": {
+        "file": "llm/http/e3582e93bb484d9bae302caf53f70326.js",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "OS Command Injection \u2014 `host` is interpolated into a shell command.",
+      "status": "open",
+      "source": "dynamic/app.js"
+    },
+    {
+      "id": "GP-DAST-005",
+      "analysis": "dynamic",
+      "scanner_types": [
+        "DAST"
+      ],
+      "language": "http",
+      "cwe": [
+        {
+          "id": "CWE-22",
+          "name": "Improper Limitation of a Pathname to a Restricted Directory (Path Traversal)"
+        }
+      ],
+      "expected_cwe": "CWE-22",
+      "title": "CWE-22: Download a file from ./public",
+      "severity": "High",
+      "location": {
+        "file": "llm/http/e3582e93bb484d9bae302caf53f70326.js",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "Path Traversal \u2014 `file` is not confined to the public dir.",
+      "status": "open",
+      "source": "dynamic/app.js"
+    },
+    {
+      "id": "GP-DAST-006",
+      "analysis": "dynamic",
+      "scanner_types": [
+        "DAST"
+      ],
+      "language": "http",
+      "cwe": [
+        {
+          "id": "CWE-601",
+          "name": "URL Redirection to Untrusted Site (Open Redirect)"
+        }
+      ],
+      "expected_cwe": "CWE-601",
+      "title": "CWE-601: Redirect to a URL",
+      "severity": "Medium",
+      "location": {
+        "file": "llm/http/e3582e93bb484d9bae302caf53f70326.js",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "Open Redirect \u2014 redirects to any user-supplied URL.",
+      "status": "open",
+      "source": "dynamic/app.js"
+    },
+    {
+      "id": "GP-DAST-007",
+      "analysis": "dynamic",
+      "scanner_types": [
+        "DAST"
+      ],
+      "language": "http",
+      "cwe": [
+        {
+          "id": "CWE-918",
+          "name": "Server-Side Request Forgery (SSRF)"
+        }
+      ],
+      "expected_cwe": "CWE-918",
+      "title": "CWE-918: Server-side fetch of a URL",
+      "severity": "High",
+      "location": {
+        "file": "llm/http/e3582e93bb484d9bae302caf53f70326.js",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "SSRF \u2014 server requests an arbitrary URL (cloud metadata reachable).",
+      "status": "open",
+      "source": "dynamic/app.js"
+    },
+    {
+      "id": "GP-DAST-008",
+      "analysis": "dynamic",
+      "scanner_types": [
+        "DAST"
+      ],
+      "language": "http",
+      "cwe": [
+        {
+          "id": "CWE-1004",
+          "name": "Sensitive Cookie Without 'HttpOnly' Flag"
+        }
+      ],
+      "expected_cwe": "CWE-1004",
+      "title": "CWE-1004: Set a session cookie",
+      "severity": "Low",
+      "location": {
+        "file": "llm/http/e3582e93bb484d9bae302caf53f70326.js",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "Session cookie set without HttpOnly/Secure/SameSite (also CWE-614).",
+      "status": "open",
+      "source": "dynamic/app.js"
+    }
+  ],
+  "negatives": []
+}

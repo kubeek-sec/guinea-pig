@@ -1,0 +1,37 @@
+[project]
+name = "guinea-pig-benchmark"
+version = "0.1.0"
+description = "Python deps for the guinea-pig scanner benchmark (benchmark/src). The scanner binaries are managed separately by benchmark.py; these are the in-process needs — tree-sitter grammars for the multi-language `analysis` scanner."
+requires-python = ">=3.12"
+dependencies = [
+    "tree-sitter>=0.23",
+    "tree-sitter-python>=0.23",
+    "tree-sitter-c>=0.23",
+    "tree-sitter-cpp>=0.23",
+    "tree-sitter-c-sharp>=0.23",
+    "tree-sitter-go>=0.23",
+    "tree-sitter-java>=0.23",
+    "tree-sitter-javascript>=0.23",
+    "tree-sitter-php>=0.23",
+    "tree-sitter-ruby>=0.23",
+    "tree-sitter-rust>=0.23",
+    "tree-sitter-typescript>=0.23",
+    # in-process dep for the `yara` malware/malicious-intent scanner (module `yara`)
+    "yara-python>=4.3",
+    # report rendering: markdown -> HTML, then HTML -> PDF (weasyprint uses the
+    # system pango/cairo/gdk-pixbuf libs, which are already present).
+    "markdown>=3.5",
+    "weasyprint>=63",
+]
+
+# The UV-based scanners (cisco-ai-skill-scanner, checkov) are NOT listed above:
+# their transitive deps conflict (cisco needs importlib-metadata>=8 via litellm,
+# checkov needs <8), so they can't share one venv. They run through THIS project's
+# uv as isolated, version-pinned overlays — `uv run --with <pkg>==<ver> <exe>` —
+# one tool at a time, so there is no conflict and no global `uv tool install`.
+# Pinned versions live in benchmark/src/dsbench/install/catalog.py.
+
+
+# Not an installable package — just a uv-managed environment for the benchmark.
+[tool.uv]
+package = false

@@ -1,0 +1,495 @@
+{
+  "_comment": "Irreducible UUID->source map for the context-stripped llm/ fixtures. build_report.py joins each row's `source` with the freshly-built positives of that source file to (re)generate llm/ground-truth.json. The opaque uuid filenames cannot be derived mechanically, so they live here.",
+  "rows": [
+    {
+      "file": "llm/c/209cc1f120c74cf1a63788e008642387.c",
+      "language": "c",
+      "source": "static/CWE-120/c/vulnerable.c"
+    },
+    {
+      "file": "llm/cpp/31370b5049bc4454bd21de98d49b0a90.cpp",
+      "language": "cpp",
+      "source": "static/CWE-120/cpp/vulnerable.cpp"
+    },
+    {
+      "file": "llm/cpp/56bf5e27385d414987aa15e33ffe78b6.cpp",
+      "language": "cpp",
+      "source": "static/CWE-121/cpp/vulnerable.cpp"
+    },
+    {
+      "file": "llm/javascript/10ea45ccf17943799080fe5e7fbe3d6a.js",
+      "language": "javascript",
+      "source": "static/CWE-1321/javascript/vulnerable.js"
+    },
+    {
+      "file": "llm/c/c6bdffddae65429c8a39aa2141ec3d3f.c",
+      "language": "c",
+      "source": "static/CWE-134/c/vulnerable.c"
+    },
+    {
+      "file": "llm/cpp/27573dc6be8d4e1d9dde24357fc2834b.cpp",
+      "language": "cpp",
+      "source": "static/CWE-134/cpp/vulnerable.cpp"
+    },
+    {
+      "file": "llm/c/9a419626478b41b0863a68bb067687e0.c",
+      "language": "c",
+      "source": "static/CWE-190/c/vulnerable.c"
+    },
+    {
+      "file": "llm/cpp/dd3b7c8545e0415ca14144c6897d73cf.cpp",
+      "language": "cpp",
+      "source": "static/CWE-190/cpp/vulnerable.cpp"
+    },
+    {
+      "file": "llm/terraform/a78bf50ec7d1429c9a1eafd33a43530b.tf",
+      "language": "terraform",
+      "source": "static/CWE-200/terraform/vulnerable.tf"
+    },
+    {
+      "file": "llm/csharp/f551312b62444a439761662567250d97.cs",
+      "language": "csharp",
+      "source": "static/CWE-22/csharp/vulnerable.cs"
+    },
+    {
+      "file": "llm/java/48e5f496bd3f4727ab384f713c0b3127.java",
+      "language": "java",
+      "source": "static/CWE-22/java/vulnerable.java"
+    },
+    {
+      "file": "llm/javascript/ed9f0c43e83846c2a29f37ddea152202.js",
+      "language": "javascript",
+      "source": "static/CWE-22/javascript/vulnerable.js"
+    },
+    {
+      "file": "llm/python/0f8a719189564f72aa87839924defac7.py",
+      "language": "python",
+      "source": "static/CWE-22/python/vulnerable.py"
+    },
+    {
+      "file": "llm/c/04b5e3ad4e814588911ad51edc1d1d78.c",
+      "language": "c",
+      "source": "static/CWE-242/c/vulnerable.c"
+    },
+    {
+      "file": "llm/github/23e7f08f973647f9846d30fc280a6cd2.yml",
+      "language": "github",
+      "source": "static/CWE-250/github/vulnerable.yml"
+    },
+    {
+      "file": "llm/kubernetes/a3bda0c7e6ec41febd0ad937b4a2c41d.yaml",
+      "language": "kubernetes",
+      "source": "static/CWE-250/kubernetes/vulnerable.yaml"
+    },
+    {
+      "file": "llm/ansible/69be0e2787ce4cfb863c24fc46fdc56d.yml",
+      "language": "ansible",
+      "source": "static/CWE-256/ansible/vulnerable.yml"
+    },
+    {
+      "file": "llm/kubernetes/53a96519951e4273a978eab713691214.yaml",
+      "language": "kubernetes",
+      "source": "static/CWE-284/kubernetes/vulnerable.yaml"
+    },
+    {
+      "file": "llm/terraform/b1ae8e92ad184761ac9f55251707e11b.tf",
+      "language": "terraform",
+      "source": "static/CWE-284/terraform/vulnerable.tf"
+    },
+    {
+      "file": "llm/java/e58c4c0fa9b34cceb5593cffeb7d3d4e.java",
+      "language": "java",
+      "source": "static/CWE-295/java/vulnerable.java"
+    },
+    {
+      "file": "llm/python/29bad5dcdeae4c4d80284d72daa3f929.py",
+      "language": "python",
+      "source": "static/CWE-295/python/vulnerable.py"
+    },
+    {
+      "file": "llm/terraform/535f55106b4147778e27b54c92463a9f.tf",
+      "language": "terraform",
+      "source": "static/CWE-311/terraform/vulnerable.tf"
+    },
+    {
+      "file": "llm/ansible/5516a236ed3449fc805ef47c7f9de32d.yml",
+      "language": "ansible",
+      "source": "static/CWE-319/ansible/vulnerable.yml"
+    },
+    {
+      "file": "llm/terraform/b5b0c72244d7492cb2e78e7a4f20c352.tf",
+      "language": "terraform",
+      "source": "static/CWE-319/terraform/vulnerable.tf"
+    },
+    {
+      "file": "llm/pem/f65d9eea48804c12bbcd4c01a0819a7e.key",
+      "language": "pem",
+      "source": "static/CWE-321/pem/vulnerable.key"
+    },
+    {
+      "file": "llm/csharp/8141f9a687484712b344746b2ff36a14.cs",
+      "language": "csharp",
+      "source": "static/CWE-327/csharp/vulnerable.cs"
+    },
+    {
+      "file": "llm/java/f70849cce3cf4c469f2c30fce3cd0780.java",
+      "language": "java",
+      "source": "static/CWE-327/java/vulnerable.java"
+    },
+    {
+      "file": "llm/javascript/b0fb5f257f50464880c6bd52caf1829a.js",
+      "language": "javascript",
+      "source": "static/CWE-327/javascript/vulnerable.js"
+    },
+    {
+      "file": "llm/python/eaeb7a795b554c609f89b23f2172aa9e.py",
+      "language": "python",
+      "source": "static/CWE-327/python/vulnerable.py"
+    },
+    {
+      "file": "llm/csharp/7baa43e0380d408b8f338df9c1b7ed25.cs",
+      "language": "csharp",
+      "source": "static/CWE-330/csharp/vulnerable.cs"
+    },
+    {
+      "file": "llm/java/cb097a6ff1ef459484cdb065e3ad36ea.java",
+      "language": "java",
+      "source": "static/CWE-330/java/vulnerable.java"
+    },
+    {
+      "file": "llm/python/e40c65ed30f140bba274fc0d9532f157.py",
+      "language": "python",
+      "source": "static/CWE-330/python/vulnerable.py"
+    },
+    {
+      "file": "llm/javascript/eb62874f32344b08a6ea485e4f70e282.js",
+      "language": "javascript",
+      "source": "static/CWE-338/javascript/vulnerable.js"
+    },
+    {
+      "file": "llm/cpp/2eaef553ae16476aafe13821d962dcb2.cpp",
+      "language": "cpp",
+      "source": "static/CWE-367/cpp/vulnerable.cpp"
+    },
+    {
+      "file": "llm/python/3667ec18e2344302a146d642cd506fb3.py",
+      "language": "python",
+      "source": "static/CWE-377/python/vulnerable.py"
+    },
+    {
+      "file": "llm/c/863d87c84f1648ae9945e1a74ba33a48.c",
+      "language": "c",
+      "source": "static/CWE-401/c/vulnerable.c"
+    },
+    {
+      "file": "llm/c/27c43a0ebe964e569789dba76522563d.c",
+      "language": "c",
+      "source": "static/CWE-415/c/vulnerable.c"
+    },
+    {
+      "file": "llm/cpp/26672dba436846cba3c62a9dd73f06b0.cpp",
+      "language": "cpp",
+      "source": "static/CWE-415/cpp/vulnerable.cpp"
+    },
+    {
+      "file": "llm/c/5f971b52ffe34e6dbf195086f10e984d.c",
+      "language": "c",
+      "source": "static/CWE-416/c/vulnerable.c"
+    },
+    {
+      "file": "llm/cpp/6a49a76ef75146f7a1e6a23a547bb0d1.cpp",
+      "language": "cpp",
+      "source": "static/CWE-416/cpp/vulnerable.cpp"
+    },
+    {
+      "file": "llm/c/a6edf3563f814af49ce8b835b092dd70.c",
+      "language": "c",
+      "source": "static/CWE-476/c/vulnerable.c"
+    },
+    {
+      "file": "llm/cpp/959a97af39494e949a8d8054944a29fc.cpp",
+      "language": "cpp",
+      "source": "static/CWE-476/cpp/vulnerable.cpp"
+    },
+    {
+      "file": "llm/github/f643e10194e34f18bf95f501453a4c67.yml",
+      "language": "github",
+      "source": "static/CWE-494/github/vulnerable.yml"
+    },
+    {
+      "file": "llm/gitlab/13805909ddca47fabc2a3843750cd3fa.yml",
+      "language": "gitlab",
+      "source": "static/CWE-494/gitlab/vulnerable.yml"
+    },
+    {
+      "file": "llm/csharp/95207bf647714cc29dee76c0cfdac37d.cs",
+      "language": "csharp",
+      "source": "static/CWE-502/csharp/vulnerable.cs"
+    },
+    {
+      "file": "llm/java/0f373707da7e436ba75937e1b0b9c747.java",
+      "language": "java",
+      "source": "static/CWE-502/java/vulnerable.java"
+    },
+    {
+      "file": "llm/javascript/be41102c07f24e24af4140a3f7ba7f82.js",
+      "language": "javascript",
+      "source": "static/CWE-502/javascript/vulnerable.js"
+    },
+    {
+      "file": "llm/python/a60a95c8aeee48daaef169e2aa7992e5.py",
+      "language": "python",
+      "source": "static/CWE-502/python/vulnerable.py"
+    },
+    {
+      "file": "llm/csharp/fd7d75f00256463e9a68a71740cc8679.cs",
+      "language": "csharp",
+      "source": "static/CWE-601/csharp/vulnerable.cs"
+    },
+    {
+      "file": "llm/javascript/10cb420e73d54781b5b3149ea6d59be4.js",
+      "language": "javascript",
+      "source": "static/CWE-601/javascript/vulnerable.js"
+    },
+    {
+      "file": "llm/csharp/a9b0a912dc834a1e9caa51fbe9337614.cs",
+      "language": "csharp",
+      "source": "static/CWE-611/csharp/vulnerable.cs"
+    },
+    {
+      "file": "llm/java/1843545dadb2472b92999697faabe401.java",
+      "language": "java",
+      "source": "static/CWE-611/java/vulnerable.java"
+    },
+    {
+      "file": "llm/python/cb0be7694f0a404ea92e1637adf2dc08.py",
+      "language": "python",
+      "source": "static/CWE-611/python/vulnerable.py"
+    },
+    {
+      "file": "llm/kubernetes/0e40b4cab0b242b78c2fc77ed1361822.yaml",
+      "language": "kubernetes",
+      "source": "static/CWE-653/kubernetes/vulnerable.yaml"
+    },
+    {
+      "file": "llm/kubernetes/7a1adf8d22b745219e807842ad303324.yaml",
+      "language": "kubernetes",
+      "source": "static/CWE-668/kubernetes/vulnerable.yaml"
+    },
+    {
+      "file": "llm/ansible/db4314d7ed5e49a5965a3065da13c66b.yml",
+      "language": "ansible",
+      "source": "static/CWE-732/ansible/vulnerable.yml"
+    },
+    {
+      "file": "llm/terraform/cd40c77ac47049738698130781eade4b.tf",
+      "language": "terraform",
+      "source": "static/CWE-732/terraform/vulnerable.tf"
+    },
+    {
+      "file": "llm/terraform/b771430147e549abbed4b0102594abf0.tf",
+      "language": "terraform",
+      "source": "static/CWE-778/terraform/vulnerable.tf"
+    },
+    {
+      "file": "llm/ansible/54f7e198655f4848bb9e5a9ba0515707.yml",
+      "language": "ansible",
+      "source": "static/CWE-78/ansible/vulnerable.yml"
+    },
+    {
+      "file": "llm/c/d7b366d9c2ea4b17993992e88f733aba.c",
+      "language": "c",
+      "source": "static/CWE-78/c/vulnerable.c"
+    },
+    {
+      "file": "llm/cpp/f41bcf7886494b4bb1eedd5af3d1549b.cpp",
+      "language": "cpp",
+      "source": "static/CWE-78/cpp/vulnerable.cpp"
+    },
+    {
+      "file": "llm/csharp/29b3423686a64de699bc1ff5e5857529.cs",
+      "language": "csharp",
+      "source": "static/CWE-78/csharp/vulnerable.cs"
+    },
+    {
+      "file": "llm/java/6174fe36e79f45aa8eb5cc461120f9bd.java",
+      "language": "java",
+      "source": "static/CWE-78/java/vulnerable.java"
+    },
+    {
+      "file": "llm/javascript/107cca19294447a990f29391a811debe.js",
+      "language": "javascript",
+      "source": "static/CWE-78/javascript/vulnerable.js"
+    },
+    {
+      "file": "llm/python/1f55586f33214d0db593cbca904f0e00.py",
+      "language": "python",
+      "source": "static/CWE-78/python/vulnerable.py"
+    },
+    {
+      "file": "llm/c/028fedc62720437bbe057887d9d72933.c",
+      "language": "c",
+      "source": "static/CWE-787/c/vulnerable.c"
+    },
+    {
+      "file": "llm/java/ba367909255440b3ada20d2c4a6e5c86.java",
+      "language": "java",
+      "source": "static/CWE-79/java/vulnerable.java"
+    },
+    {
+      "file": "llm/javascript/389fc2df447b46238c43f17f270c7d9b.js",
+      "language": "javascript",
+      "source": "static/CWE-79/javascript/vulnerable.js"
+    },
+    {
+      "file": "llm/python/e7ef8a28b18d443f9c1c9613b98c51f9.py",
+      "language": "python",
+      "source": "static/CWE-79/python/vulnerable.py"
+    },
+    {
+      "file": "llm/ansible/518e255a1d7445a4804eff0ca39b1f1c.yml",
+      "language": "ansible",
+      "source": "static/CWE-798/ansible/vulnerable.yml"
+    },
+    {
+      "file": "llm/conf/f33bd4c030f143fa8a6c3dc5729f4e1e.conf",
+      "language": "conf",
+      "source": "static/CWE-798/conf/vulnerable.conf"
+    },
+    {
+      "file": "llm/csharp/2503202f04bb49d7a8112d44d9501001.cs",
+      "language": "csharp",
+      "source": "static/CWE-798/csharp/vulnerable.cs"
+    },
+    {
+      "file": "llm/env/1c92486a080e4600a6cfb25bac1abf2a.env",
+      "language": "env",
+      "source": "static/CWE-798/env/vulnerable.env"
+    },
+    {
+      "file": "llm/ini/4d9520af063643f8a044a3039406300b.ini",
+      "language": "ini",
+      "source": "static/CWE-798/ini/vulnerable.ini"
+    },
+    {
+      "file": "llm/java/45ad974acdf540619152096dc133407e.java",
+      "language": "java",
+      "source": "static/CWE-798/java/vulnerable.java"
+    },
+    {
+      "file": "llm/javascript/3344ea9500bd45d089443f025e61f259.js",
+      "language": "javascript",
+      "source": "static/CWE-798/javascript/vulnerable.js"
+    },
+    {
+      "file": "llm/python/78d1953abefc493a88d08603753da5ed.py",
+      "language": "python",
+      "source": "static/CWE-798/python/vulnerable.py"
+    },
+    {
+      "file": "llm/terraform/764bc49961c84cb3a13b00669f4390c4.tf",
+      "language": "terraform",
+      "source": "static/CWE-798/terraform/vulnerable.tf"
+    },
+    {
+      "file": "llm/github/98975b7da967484aa4280097bf7c465a.yml",
+      "language": "github",
+      "source": "static/CWE-829/github/vulnerable.yml"
+    },
+    {
+      "file": "llm/gitlab/6cff55c737a34dbf884cd5ea2b0801fc.yml",
+      "language": "gitlab",
+      "source": "static/CWE-829/gitlab/vulnerable.yml"
+    },
+    {
+      "file": "llm/csharp/bd63a00989b846b0942274d4e85186ec.cs",
+      "language": "csharp",
+      "source": "static/CWE-89/csharp/vulnerable.cs"
+    },
+    {
+      "file": "llm/java/827920eb20e54f1bbbad501e72961cd7.java",
+      "language": "java",
+      "source": "static/CWE-89/java/vulnerable.java"
+    },
+    {
+      "file": "llm/javascript/f75e4d6c7ce5412791771d5e2b8b9c2c.js",
+      "language": "javascript",
+      "source": "static/CWE-89/javascript/vulnerable.js"
+    },
+    {
+      "file": "llm/python/9c42366f0c95481a9fa4e0cb84fa6698.py",
+      "language": "python",
+      "source": "static/CWE-89/python/vulnerable.py"
+    },
+    {
+      "file": "llm/java/87784ecf40f542a09f99fc1ef5e7c5ed.java",
+      "language": "java",
+      "source": "static/CWE-90/java/vulnerable.java"
+    },
+    {
+      "file": "llm/python/0003634462a2406db7894aaaa2995fa7.py",
+      "language": "python",
+      "source": "static/CWE-918/python/vulnerable.py"
+    },
+    {
+      "file": "llm/csharp/3f3bf9f3be6f4ea9b80653eb06d6530d.cs",
+      "language": "csharp",
+      "source": "static/CWE-94/csharp/vulnerable.cs"
+    },
+    {
+      "file": "llm/github/4dcfa866ca6c423489b3ad528e88b7c1.yml",
+      "language": "github",
+      "source": "static/CWE-94/github/vulnerable.yml"
+    },
+    {
+      "file": "llm/gitlab/2d190923d0784efbb7108c8b2ffe841e.yml",
+      "language": "gitlab",
+      "source": "static/CWE-94/gitlab/vulnerable.yml"
+    },
+    {
+      "file": "llm/javascript/0dcb24fb821144d09fb8b2a93a53cc02.js",
+      "language": "javascript",
+      "source": "static/CWE-94/javascript/vulnerable.js"
+    },
+    {
+      "file": "llm/python/63e024acd44747879894d4e7dbd2d16a.py",
+      "language": "python",
+      "source": "static/CWE-94/python/vulnerable.py"
+    },
+    {
+      "file": "llm/python/b4e31554bce148858e64e791842e727c.toml",
+      "language": "python",
+      "source": "pipeline/sca/python/Pipfile"
+    },
+    {
+      "file": "llm/ruby/797f777f27654912ae6f537057c37847.rb",
+      "language": "ruby",
+      "source": "pipeline/sca/ruby/Gemfile"
+    },
+    {
+      "file": "llm/node/55bcea6b103f49caa2dd1c77b742c4c4.json",
+      "language": "node",
+      "source": "pipeline/sca/node/package.json"
+    },
+    {
+      "file": "llm/java/f7f85182348844478cb5d9f26fee4582.xml",
+      "language": "java",
+      "source": "pipeline/sca/java/pom.xml"
+    },
+    {
+      "file": "llm/github/17dee3a34dd04cca9e9462972bbe562f.yml",
+      "language": "github",
+      "source": "pipeline/ci/github/.github/workflows/ci.yml"
+    },
+    {
+      "file": "llm/gitlab/641a4dd8b21c41ae8ad42bd37ff2b9db.yml",
+      "language": "gitlab",
+      "source": "pipeline/ci/gitlab/.gitlab-ci.yml"
+    },
+    {
+      "file": "llm/http/e3582e93bb484d9bae302caf53f70326.js",
+      "language": "http",
+      "source": "dynamic/app.js"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+[project]
+name = "bumpy-pig"
+version = "0.1.0"
+description = "YAML loader compatibility across pyyaml versions"
+requires-python = ">=3.10"
+dependencies = [
+    "pyyaml==3.13",
+]
+
+[project.optional-dependencies]
+strict = [
+    "pyyaml>=6.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

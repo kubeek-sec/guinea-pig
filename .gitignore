@@ -1,0 +1,7 @@
+dynamic/node_modules/
+benchmark/results/
+.idea
+.env
+__pycache__/
+*.pyc
+d.venv/

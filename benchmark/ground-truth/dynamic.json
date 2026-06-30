@@ -1,0 +1,258 @@
+{
+  "schema_version": "5.0",
+  "theme": "dynamic",
+  "report": {
+    "title": "guinea-pig \u2014 DAST target endpoints (ground truth)",
+    "scanner_families": [
+      "DAST"
+    ],
+    "generated_by": "benchmark/src/build_report.py (derived from the fixtures)",
+    "scope": "Endpoints of the running Express service (dynamic/app.js), graded by endpoint rather than by file. See dynamic/openapi.yml (x-cwe per path).",
+    "fields": {
+      "positives[]": "fixtures a scanner SHOULD detect; keyed by location.file",
+      "positives[].scanner_types": "families able to detect it (SAST, IAC, PIPELINE, SECRET, DAST, SCA, SKILL)",
+      "positives[].expected_cwe": "ground-truth CWE for benchmark/src/benchmark.py (null for skills \u2014 see category)",
+      "positives[].source": "llm only: original annotated fixture, held back from the model under test",
+      "negatives[]": "fixtures a scanner should NOT flag; a report here is a false positive",
+      "negatives[].kind": "remediation / lookalike / benign / benign-lookalike"
+    },
+    "severity_scale": [
+      "Critical",
+      "High",
+      "Medium",
+      "Low",
+      "Info"
+    ],
+    "note": "Endpoint-graded. The dynamic theme is launched and scored by endpoint, not by file."
+  },
+  "summary": {
+    "positives": 8,
+    "negatives": 0,
+    "by_analysis": {
+      "dynamic": 8
+    },
+    "by_scanner_type": {
+      "DAST": 8
+    },
+    "by_severity": {
+      "Critical": 3,
+      "High": 3,
+      "Medium": 1,
+      "Low": 1
+    },
+    "by_language": {
+      "http": 8
+    }
+  },
+  "positives": [
+    {
+      "id": "GP-DAST-001",
+      "analysis": "dynamic",
+      "scanner_types": [
+        "DAST"
+      ],
+      "language": "http",
+      "cwe": [
+        {
+          "id": "CWE-79",
+          "name": "Improper Neutralization of Input During Web Page Generation (Cross-site Scripting)"
+        }
+      ],
+      "expected_cwe": "CWE-79",
+      "title": "CWE-79: Reflected search (echoes the query into HTML)",
+      "severity": "High",
+      "location": {
+        "file": "dynamic/app.js",
+        "endpoint": "/search",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "Reflected Cross-Site Scripting \u2014 `q` is reflected unescaped.",
+      "status": "open"
+    },
+    {
+      "id": "GP-DAST-002",
+      "analysis": "dynamic",
+      "scanner_types": [
+        "DAST"
+      ],
+      "language": "http",
+      "cwe": [
+        {
+          "id": "CWE-89",
+          "name": "Improper Neutralization of Special Elements used in an SQL Command (SQL Injection)"
+        }
+      ],
+      "expected_cwe": "CWE-89",
+      "title": "CWE-89: Login (string-concatenated SQL)",
+      "severity": "Critical",
+      "location": {
+        "file": "dynamic/app.js",
+        "endpoint": "/login",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "SQL Injection via username/password; also CWE-209 (verbose SQL errors).",
+      "status": "open"
+    },
+    {
+      "id": "GP-DAST-003",
+      "analysis": "dynamic",
+      "scanner_types": [
+        "DAST"
+      ],
+      "language": "http",
+      "cwe": [
+        {
+          "id": "CWE-89",
+          "name": "Improper Neutralization of Special Elements used in an SQL Command (SQL Injection)"
+        }
+      ],
+      "expected_cwe": "CWE-89",
+      "title": "CWE-89: Lookup user by id (string-concatenated SQL)",
+      "severity": "Critical",
+      "location": {
+        "file": "dynamic/app.js",
+        "endpoint": "/users",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "SQL Injection via `id`.",
+      "status": "open"
+    },
+    {
+      "id": "GP-DAST-004",
+      "analysis": "dynamic",
+      "scanner_types": [
+        "DAST"
+      ],
+      "language": "http",
+      "cwe": [
+        {
+          "id": "CWE-78",
+          "name": "Improper Neutralization of Special Elements used in an OS Command (OS Command Injection)"
+        }
+      ],
+      "expected_cwe": "CWE-78",
+      "title": "CWE-78: Ping a host (shell command)",
+      "severity": "Critical",
+      "location": {
+        "file": "dynamic/app.js",
+        "endpoint": "/ping",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "OS Command Injection \u2014 `host` is interpolated into a shell command.",
+      "status": "open"
+    },
+    {
+      "id": "GP-DAST-005",
+      "analysis": "dynamic",
+      "scanner_types": [
+        "DAST"
+      ],
+      "language": "http",
+      "cwe": [
+        {
+          "id": "CWE-22",
+          "name": "Improper Limitation of a Pathname to a Restricted Directory (Path Traversal)"
+        }
+      ],
+      "expected_cwe": "CWE-22",
+      "title": "CWE-22: Download a file from ./public",
+      "severity": "High",
+      "location": {
+        "file": "dynamic/app.js",
+        "endpoint": "/download",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "Path Traversal \u2014 `file` is not confined to the public dir.",
+      "status": "open"
+    },
+    {
+      "id": "GP-DAST-006",
+      "analysis": "dynamic",
+      "scanner_types": [
+        "DAST"
+      ],
+      "language": "http",
+      "cwe": [
+        {
+          "id": "CWE-601",
+          "name": "URL Redirection to Untrusted Site (Open Redirect)"
+        }
+      ],
+      "expected_cwe": "CWE-601",
+      "title": "CWE-601: Redirect to a URL",
+      "severity": "Medium",
+      "location": {
+        "file": "dynamic/app.js",
+        "endpoint": "/redirect",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "Open Redirect \u2014 redirects to any user-supplied URL.",
+      "status": "open"
+    },
+    {
+      "id": "GP-DAST-007",
+      "analysis": "dynamic",
+      "scanner_types": [
+        "DAST"
+      ],
+      "language": "http",
+      "cwe": [
+        {
+          "id": "CWE-918",
+          "name": "Server-Side Request Forgery (SSRF)"
+        }
+      ],
+      "expected_cwe": "CWE-918",
+      "title": "CWE-918: Server-side fetch of a URL",
+      "severity": "High",
+      "location": {
+        "file": "dynamic/app.js",
+        "endpoint": "/fetch",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "SSRF \u2014 server requests an arbitrary URL (cloud metadata reachable).",
+      "status": "open"
+    },
+    {
+      "id": "GP-DAST-008",
+      "analysis": "dynamic",
+      "scanner_types": [
+        "DAST"
+      ],
+      "language": "http",
+      "cwe": [
+        {
+          "id": "CWE-1004",
+          "name": "Sensitive Cookie Without 'HttpOnly' Flag"
+        }
+      ],
+      "expected_cwe": "CWE-1004",
+      "title": "CWE-1004: Set a session cookie",
+      "severity": "Low",
+      "location": {
+        "file": "dynamic/app.js",
+        "endpoint": "/set-cookie",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "Session cookie set without HttpOnly/Secure/SameSite (also CWE-614).",
+      "status": "open"
+    }
+  ],
+  "negatives": []
+}

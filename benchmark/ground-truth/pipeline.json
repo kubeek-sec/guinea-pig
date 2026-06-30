@@ -1,0 +1,433 @@
+{
+  "schema_version": "5.0",
+  "theme": "pipeline",
+  "report": {
+    "title": "guinea-pig \u2014 supply-chain (SCA) & CI/CD fixtures (ground truth)",
+    "scanner_families": [
+      "PIPELINE",
+      "SAST",
+      "SCA"
+    ],
+    "generated_by": "benchmark/src/build_report.py (derived from the fixtures)",
+    "scope": "Whole-file manifests pinned to vulnerable dependencies (CWE-1395), the bumpy pyyaml project (CWE-1395 + CWE-502 yaml.load sinks), and insecure CI/CD configs (one positive per CWE per file).",
+    "fields": {
+      "positives[]": "fixtures a scanner SHOULD detect; keyed by location.file",
+      "positives[].scanner_types": "families able to detect it (SAST, IAC, PIPELINE, SECRET, DAST, SCA, SKILL)",
+      "positives[].expected_cwe": "ground-truth CWE for benchmark/src/benchmark.py (null for skills \u2014 see category)",
+      "positives[].source": "llm only: original annotated fixture, held back from the model under test",
+      "negatives[]": "fixtures a scanner should NOT flag; a report here is a false positive",
+      "negatives[].kind": "remediation / lookalike / benign / benign-lookalike"
+    },
+    "severity_scale": [
+      "Critical",
+      "High",
+      "Medium",
+      "Low",
+      "Info"
+    ],
+    "note": "Re-run benchmark/src/build_report.py after adding/removing fixtures."
+  },
+  "summary": {
+    "positives": 15,
+    "negatives": 0,
+    "by_analysis": {
+      "static": 15
+    },
+    "by_scanner_type": {
+      "PIPELINE": 8,
+      "SAST": 2,
+      "SCA": 5
+    },
+    "by_severity": {
+      "Critical": 4,
+      "High": 7,
+      "Medium": 4
+    },
+    "by_language": {
+      "github": 4,
+      "gitlab": 4,
+      "java": 1,
+      "node": 1,
+      "python": 4,
+      "ruby": 1
+    }
+  },
+  "positives": [
+    {
+      "id": "GP-SCA-001",
+      "analysis": "static",
+      "scanner_types": [
+        "SCA"
+      ],
+      "language": "python",
+      "cwe": [
+        {
+          "id": "CWE-1395",
+          "name": "Dependency on Vulnerable Third-Party Component"
+        }
+      ],
+      "expected_cwe": "CWE-1395",
+      "title": "CWE-1395: vulnerable python dependencies",
+      "severity": "High",
+      "location": {
+        "file": "pipeline/sca/python/Pipfile",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "Django 3.0.1 and other Python packages with known CVEs.",
+      "status": "open"
+    },
+    {
+      "id": "GP-SCA-002",
+      "analysis": "static",
+      "scanner_types": [
+        "SCA"
+      ],
+      "language": "ruby",
+      "cwe": [
+        {
+          "id": "CWE-1395",
+          "name": "Dependency on Vulnerable Third-Party Component"
+        }
+      ],
+      "expected_cwe": "CWE-1395",
+      "title": "CWE-1395: vulnerable ruby dependencies",
+      "severity": "High",
+      "location": {
+        "file": "pipeline/sca/ruby/Gemfile",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "rails 6.1.4 / devise with known CVEs.",
+      "status": "open"
+    },
+    {
+      "id": "GP-SCA-003",
+      "analysis": "static",
+      "scanner_types": [
+        "SCA"
+      ],
+      "language": "node",
+      "cwe": [
+        {
+          "id": "CWE-1395",
+          "name": "Dependency on Vulnerable Third-Party Component"
+        }
+      ],
+      "expected_cwe": "CWE-1395",
+      "title": "CWE-1395: vulnerable node dependencies",
+      "severity": "High",
+      "location": {
+        "file": "pipeline/sca/node/package.json",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "lodash, minimist, express, axios, node-serialize with known CVEs.",
+      "status": "open"
+    },
+    {
+      "id": "GP-SCA-004",
+      "analysis": "static",
+      "scanner_types": [
+        "SCA"
+      ],
+      "language": "java",
+      "cwe": [
+        {
+          "id": "CWE-1395",
+          "name": "Dependency on Vulnerable Third-Party Component"
+        }
+      ],
+      "expected_cwe": "CWE-1395",
+      "title": "CWE-1395: vulnerable java dependencies",
+      "severity": "High",
+      "location": {
+        "file": "pipeline/sca/java/pom.xml",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "log4j-core 2.14.1 (Log4Shell), jackson-databind, spring-web, snakeyaml.",
+      "status": "open"
+    },
+    {
+      "id": "GP-SCA-005",
+      "analysis": "static",
+      "scanner_types": [
+        "SCA"
+      ],
+      "language": "python",
+      "cwe": [
+        {
+          "id": "CWE-1395",
+          "name": "Dependency on Vulnerable Third-Party Component"
+        }
+      ],
+      "expected_cwe": "CWE-1395",
+      "title": "CWE-1395: vulnerable python dependencies",
+      "severity": "High",
+      "location": {
+        "file": "pipeline/sca/bumpy/pyproject.toml",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "pyyaml==3.13 \u2014 a dependency with known RCE-via-yaml.load CVEs (CVE-2017-18342 and related).",
+      "status": "open"
+    },
+    {
+      "id": "GP-SAST-065",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "python",
+      "cwe": [
+        {
+          "id": "CWE-502",
+          "name": "Deserialization of Untrusted Data"
+        }
+      ],
+      "expected_cwe": "CWE-502",
+      "title": "CWE-502: Deserialization of Untrusted Data",
+      "severity": "Critical",
+      "location": {
+        "file": "pipeline/sca/bumpy/app/config_loader.py",
+        "start_line": 1,
+        "snippet": "yaml.load() with the default (unsafe) Loader"
+      },
+      "patched": null,
+      "description": "Loads YAML with the unsafe default Loader (yaml.load without SafeLoader), allowing arbitrary code execution from untrusted input.",
+      "status": "open"
+    },
+    {
+      "id": "GP-SAST-066",
+      "analysis": "static",
+      "scanner_types": [
+        "SAST"
+      ],
+      "language": "python",
+      "cwe": [
+        {
+          "id": "CWE-502",
+          "name": "Deserialization of Untrusted Data"
+        }
+      ],
+      "expected_cwe": "CWE-502",
+      "title": "CWE-502: Deserialization of Untrusted Data",
+      "severity": "Critical",
+      "location": {
+        "file": "pipeline/sca/bumpy/demo/run_fixtures.py",
+        "start_line": 1,
+        "snippet": "yaml.load(raw)"
+      },
+      "patched": null,
+      "description": "Deserializes fixture YAML via the legacy yaml.load() API, which executes !!python/object tags.",
+      "status": "open"
+    },
+    {
+      "id": "GP-PIPELINE-008",
+      "analysis": "static",
+      "scanner_types": [
+        "PIPELINE"
+      ],
+      "language": "github",
+      "cwe": [
+        {
+          "id": "CWE-94",
+          "name": "Improper Control of Generation of Code (Code Injection)"
+        }
+      ],
+      "expected_cwe": "CWE-94",
+      "title": "CWE-94: Improper Control of Generation of Code (Code Injection)",
+      "severity": "Critical",
+      "location": {
+        "file": "pipeline/ci/github/.github/workflows/ci.yml",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "Insecure CI/CD configuration (github) exhibiting CWE-94.",
+      "status": "open"
+    },
+    {
+      "id": "GP-PIPELINE-009",
+      "analysis": "static",
+      "scanner_types": [
+        "PIPELINE"
+      ],
+      "language": "github",
+      "cwe": [
+        {
+          "id": "CWE-250",
+          "name": "Execution with Unnecessary Privileges"
+        }
+      ],
+      "expected_cwe": "CWE-250",
+      "title": "CWE-250: Execution with Unnecessary Privileges",
+      "severity": "Medium",
+      "location": {
+        "file": "pipeline/ci/github/.github/workflows/ci.yml",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "Insecure CI/CD configuration (github) exhibiting CWE-250.",
+      "status": "open"
+    },
+    {
+      "id": "GP-PIPELINE-010",
+      "analysis": "static",
+      "scanner_types": [
+        "PIPELINE"
+      ],
+      "language": "github",
+      "cwe": [
+        {
+          "id": "CWE-494",
+          "name": "Download of Code Without Integrity Check"
+        }
+      ],
+      "expected_cwe": "CWE-494",
+      "title": "CWE-494: Download of Code Without Integrity Check",
+      "severity": "High",
+      "location": {
+        "file": "pipeline/ci/github/.github/workflows/ci.yml",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "Insecure CI/CD configuration (github) exhibiting CWE-494.",
+      "status": "open"
+    },
+    {
+      "id": "GP-PIPELINE-011",
+      "analysis": "static",
+      "scanner_types": [
+        "PIPELINE"
+      ],
+      "language": "github",
+      "cwe": [
+        {
+          "id": "CWE-829",
+          "name": "Inclusion of Functionality from Untrusted Control Sphere"
+        }
+      ],
+      "expected_cwe": "CWE-829",
+      "title": "CWE-829: Inclusion of Functionality from Untrusted Control Sphere",
+      "severity": "Medium",
+      "location": {
+        "file": "pipeline/ci/github/.github/workflows/ci.yml",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "Insecure CI/CD configuration (github) exhibiting CWE-829.",
+      "status": "open"
+    },
+    {
+      "id": "GP-PIPELINE-012",
+      "analysis": "static",
+      "scanner_types": [
+        "PIPELINE"
+      ],
+      "language": "gitlab",
+      "cwe": [
+        {
+          "id": "CWE-94",
+          "name": "Improper Control of Generation of Code (Code Injection)"
+        }
+      ],
+      "expected_cwe": "CWE-94",
+      "title": "CWE-94: Improper Control of Generation of Code (Code Injection)",
+      "severity": "Critical",
+      "location": {
+        "file": "pipeline/ci/gitlab/.gitlab-ci.yml",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "Insecure CI/CD configuration (gitlab) exhibiting CWE-94.",
+      "status": "open"
+    },
+    {
+      "id": "GP-PIPELINE-013",
+      "analysis": "static",
+      "scanner_types": [
+        "PIPELINE"
+      ],
+      "language": "gitlab",
+      "cwe": [
+        {
+          "id": "CWE-494",
+          "name": "Download of Code Without Integrity Check"
+        }
+      ],
+      "expected_cwe": "CWE-494",
+      "title": "CWE-494: Download of Code Without Integrity Check",
+      "severity": "High",
+      "location": {
+        "file": "pipeline/ci/gitlab/.gitlab-ci.yml",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "Insecure CI/CD configuration (gitlab) exhibiting CWE-494.",
+      "status": "open"
+    },
+    {
+      "id": "GP-PIPELINE-014",
+      "analysis": "static",
+      "scanner_types": [
+        "PIPELINE"
+      ],
+      "language": "gitlab",
+      "cwe": [
+        {
+          "id": "CWE-532",
+          "name": "Insertion of Sensitive Information into Log File"
+        }
+      ],
+      "expected_cwe": "CWE-532",
+      "title": "CWE-532: Insertion of Sensitive Information into Log File",
+      "severity": "Medium",
+      "location": {
+        "file": "pipeline/ci/gitlab/.gitlab-ci.yml",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "Insecure CI/CD configuration (gitlab) exhibiting CWE-532.",
+      "status": "open"
+    },
+    {
+      "id": "GP-PIPELINE-015",
+      "analysis": "static",
+      "scanner_types": [
+        "PIPELINE"
+      ],
+      "language": "gitlab",
+      "cwe": [
+        {
+          "id": "CWE-829",
+          "name": "Inclusion of Functionality from Untrusted Control Sphere"
+        }
+      ],
+      "expected_cwe": "CWE-829",
+      "title": "CWE-829: Inclusion of Functionality from Untrusted Control Sphere",
+      "severity": "Medium",
+      "location": {
+        "file": "pipeline/ci/gitlab/.gitlab-ci.yml",
+        "start_line": 1,
+        "snippet": ""
+      },
+      "patched": null,
+      "description": "Insecure CI/CD configuration (gitlab) exhibiting CWE-829.",
+      "status": "open"
+    }
+  ],
+  "negatives": []
+}
