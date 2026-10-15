@@ -2,7 +2,6 @@ package example.toolshed.store;
 
 import javax.sql.DataSource;
 
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -63,25 +62,32 @@ public class Schema {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Runs while the context is still being refreshed, so the tables exist and the
+     * workshop is stocked before the connector accepts its first request.
+     */
     @Bean
-    CommandLineRunner initDatabase(JdbcTemplate jdbc, BCryptPasswordEncoder encoder) {
-        return args -> {
-            for (String statement : DDL.split(";")) {
-                if (!statement.isBlank()) {
-                    jdbc.execute(statement);
-                }
+    SchemaReady schemaReady(JdbcTemplate jdbc, BCryptPasswordEncoder encoder) {
+        for (String statement : DDL.split(";")) {
+            if (!statement.isBlank()) {
+                jdbc.execute(statement);
             }
-            Integer tools = jdbc.queryForObject("SELECT COUNT(*) FROM tools", Integer.class);
-            if (tools != null && tools == 0) {
-                for (Object[] t : SEED_TOOLS) {
-                    jdbc.update("INSERT INTO tools (name, category, description, daily_rate) VALUES (?, ?, ?, ?)",
-                            t[0], t[1], t[2], t[3]);
-                }
-                for (String[] m : SEED_MEMBERS) {
-                    jdbc.update("INSERT INTO members (email, full_name, password, role) VALUES (?, ?, ?, ?)",
-                            m[0], m[1], encoder.encode(m[2]), m[3]);
-                }
+        }
+        Integer tools = jdbc.queryForObject("SELECT COUNT(*) FROM tools", Integer.class);
+        if (tools != null && tools == 0) {
+            for (Object[] t : SEED_TOOLS) {
+                jdbc.update("INSERT INTO tools (name, category, description, daily_rate) VALUES (?, ?, ?, ?)",
+                        t[0], t[1], t[2], t[3]);
             }
-        };
+            for (String[] m : SEED_MEMBERS) {
+                jdbc.update("INSERT INTO members (email, full_name, password, role) VALUES (?, ?, ?, ?)",
+                        m[0], m[1], encoder.encode(m[2]), m[3]);
+            }
+        }
+        return new SchemaReady();
+    }
+
+    /** Marker bean the rest of the context can depend on. */
+    public static final class SchemaReady {
     }
 }

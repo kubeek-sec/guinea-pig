@@ -6,7 +6,7 @@ back. Staff members also look up member records.
 
 ## Overview
 
-- **Stack**: Rust 1.79, axum 0.7, rusqlite (bundled SQLite), jsonwebtoken, bcrypt
+- **Stack**: Rust 1.90, axum 0.7, rusqlite (bundled SQLite), jsonwebtoken, bcrypt
 - **Port**: `8000`
 - **Storage**: a SQLite file and an uploads directory, both under `var/`
   (created on first start and seeded with five tools and three members)
@@ -24,7 +24,7 @@ back. Staff members also look up member records.
 docker build -t toolshed-rust .
 ```
 
-Without docker (Rust 1.79 or later):
+Without docker (Rust 1.90 or later):
 
 ```bash
 cargo build --release

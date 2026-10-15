@@ -1,0 +1,222 @@
+# Every Toolshed application, vulnerable and patched, side by side.
+#
+#   docker compose up -d --build          # all twenty
+#   docker compose up -d python go        # a subset
+#   docker compose ps                     # which port is which
+#   docker compose down -v                # stop and drop the volumes
+#
+# app          -> http://localhost:81NN
+# app-patched  -> http://localhost:82NN
+
+x-toolshed: &toolshed
+  restart: unless-stopped
+  environment:
+    TOOLSHED_TOKEN_KEY: compose-instance-key-long-enough-for-hs256
+  healthcheck:
+    test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8000/healthz"]
+    interval: 10s
+    timeout: 3s
+    retries: 18
+
+services:
+  python:
+    <<: *toolshed
+    build: ./python/app
+    image: guinea-pig/python-app
+    container_name: toolshed-python
+    ports: ["127.0.0.1:8101:8000"]
+    volumes:
+      - python_data:/srv/toolshed/var
+
+  python-patched:
+    <<: *toolshed
+    build: ./python/app-patched
+    image: guinea-pig/python-app-patched
+    container_name: toolshed-python-patched
+    ports: ["127.0.0.1:8201:8000"]
+    volumes:
+      - python_patched_data:/srv/toolshed/var
+
+  go:
+    <<: *toolshed
+    build: ./go/app
+    image: guinea-pig/go-app
+    container_name: toolshed-go
+    ports: ["127.0.0.1:8102:8000"]
+    volumes:
+      - go_data:/srv/toolshed/var
+
+  go-patched:
+    <<: *toolshed
+    build: ./go/app-patched
+    image: guinea-pig/go-app-patched
+    container_name: toolshed-go-patched
+    ports: ["127.0.0.1:8202:8000"]
+    volumes:
+      - go_patched_data:/srv/toolshed/var
+
+  typescript:
+    <<: *toolshed
+    build: ./typescript/app
+    image: guinea-pig/typescript-app
+    container_name: toolshed-typescript
+    ports: ["127.0.0.1:8103:8000"]
+    volumes:
+      - typescript_data:/srv/toolshed/var
+
+  typescript-patched:
+    <<: *toolshed
+    build: ./typescript/app-patched
+    image: guinea-pig/typescript-app-patched
+    container_name: toolshed-typescript-patched
+    ports: ["127.0.0.1:8203:8000"]
+    volumes:
+      - typescript_patched_data:/srv/toolshed/var
+
+  java:
+    <<: *toolshed
+    build: ./java/app
+    image: guinea-pig/java-app
+    container_name: toolshed-java
+    ports: ["127.0.0.1:8104:8000"]
+    volumes:
+      - java_data:/srv/toolshed/var
+
+  java-patched:
+    <<: *toolshed
+    build: ./java/app-patched
+    image: guinea-pig/java-app-patched
+    container_name: toolshed-java-patched
+    ports: ["127.0.0.1:8204:8000"]
+    volumes:
+      - java_patched_data:/srv/toolshed/var
+
+  csharp:
+    <<: *toolshed
+    build: ./csharp/app
+    image: guinea-pig/csharp-app
+    container_name: toolshed-csharp
+    ports: ["127.0.0.1:8105:8000"]
+    volumes:
+      - csharp_data:/srv/toolshed/var
+
+  csharp-patched:
+    <<: *toolshed
+    build: ./csharp/app-patched
+    image: guinea-pig/csharp-app-patched
+    container_name: toolshed-csharp-patched
+    ports: ["127.0.0.1:8205:8000"]
+    volumes:
+      - csharp_patched_data:/srv/toolshed/var
+
+  php:
+    <<: *toolshed
+    build: ./php/app
+    image: guinea-pig/php-app
+    container_name: toolshed-php
+    ports: ["127.0.0.1:8106:8000"]
+    volumes:
+      - php_data:/srv/toolshed/var
+
+  php-patched:
+    <<: *toolshed
+    build: ./php/app-patched
+    image: guinea-pig/php-app-patched
+    container_name: toolshed-php-patched
+    ports: ["127.0.0.1:8206:8000"]
+    volumes:
+      - php_patched_data:/srv/toolshed/var
+
+  ruby:
+    <<: *toolshed
+    build: ./ruby/app
+    image: guinea-pig/ruby-app
+    container_name: toolshed-ruby
+    ports: ["127.0.0.1:8107:8000"]
+    volumes:
+      - ruby_data:/srv/toolshed/var
+
+  ruby-patched:
+    <<: *toolshed
+    build: ./ruby/app-patched
+    image: guinea-pig/ruby-app-patched
+    container_name: toolshed-ruby-patched
+    ports: ["127.0.0.1:8207:8000"]
+    volumes:
+      - ruby_patched_data:/srv/toolshed/var
+
+  rust:
+    <<: *toolshed
+    build: ./rust/app
+    image: guinea-pig/rust-app
+    container_name: toolshed-rust
+    ports: ["127.0.0.1:8108:8000"]
+    volumes:
+      - rust_data:/srv/toolshed/var
+
+  rust-patched:
+    <<: *toolshed
+    build: ./rust/app-patched
+    image: guinea-pig/rust-app-patched
+    container_name: toolshed-rust-patched
+    ports: ["127.0.0.1:8208:8000"]
+    volumes:
+      - rust_patched_data:/srv/toolshed/var
+
+  c:
+    <<: *toolshed
+    build: ./c/app
+    image: guinea-pig/c-app
+    container_name: toolshed-c
+    ports: ["127.0.0.1:8109:8000"]
+    volumes:
+      - c_data:/srv/toolshed/var
+
+  c-patched:
+    <<: *toolshed
+    build: ./c/app-patched
+    image: guinea-pig/c-app-patched
+    container_name: toolshed-c-patched
+    ports: ["127.0.0.1:8209:8000"]
+    volumes:
+      - c_patched_data:/srv/toolshed/var
+
+  cpp:
+    <<: *toolshed
+    build: ./cpp/app
+    image: guinea-pig/cpp-app
+    container_name: toolshed-cpp
+    ports: ["127.0.0.1:8110:8000"]
+    volumes:
+      - cpp_data:/srv/toolshed/var
+
+  cpp-patched:
+    <<: *toolshed
+    build: ./cpp/app-patched
+    image: guinea-pig/cpp-app-patched
+    container_name: toolshed-cpp-patched
+    ports: ["127.0.0.1:8210:8000"]
+    volumes:
+      - cpp_patched_data:/srv/toolshed/var
+
+volumes:
+  python_data:
+  python_patched_data:
+  go_data:
+  go_patched_data:
+  typescript_data:
+  typescript_patched_data:
+  java_data:
+  java_patched_data:
+  csharp_data:
+  csharp_patched_data:
+  php_data:
+  php_patched_data:
+  ruby_data:
+  ruby_patched_data:
+  rust_data:
+  rust_patched_data:
+  c_data:
+  c_patched_data:
+  cpp_data:
+  cpp_patched_data:

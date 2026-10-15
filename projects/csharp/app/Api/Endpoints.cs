@@ -11,6 +11,11 @@ public static class Endpoints
 {
     private static readonly HashSet<string> Sortable = ["name", "category", "daily_rate"];
     private static readonly HashSet<string> Accepted = [".jpg", ".jpeg", ".png", ".webp"];
+    private static readonly Dictionary<string, string> PhotoTypes = new()
+    {
+        [".jpg"] = "image/jpeg", [".jpeg"] = "image/jpeg",
+        [".png"] = "image/png",  [".webp"] = "image/webp",
+    };
     private const int DefaultDays = 7;
     private const long MaxPhotoBytes = 8L * 1024 * 1024;
 
@@ -200,8 +205,13 @@ public static class Endpoints
             {
                 return Results.Json(new { error = "no such photo" }, statusCode: 404);
             }
+            var ext = Path.GetExtension(file).ToLowerInvariant();
+            if (!PhotoTypes.TryGetValue(ext, out var contentType))
+            {
+                return Results.Json(new { error = "no such photo" }, statusCode: 404);
+            }
             response.Headers["X-Content-Type-Options"] = "nosniff";
-            return Results.File(file);
+            return Results.File(file, contentType);
         });
     }
 }

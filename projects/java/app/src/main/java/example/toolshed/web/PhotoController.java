@@ -16,6 +16,7 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,9 @@ import example.toolshed.store.Member;
 public class PhotoController {
 
     private static final Set<String> ACCEPTED = Set.of(".jpg", ".jpeg", ".png", ".webp");
+    private static final Map<String, MediaType> PHOTO_TYPES = Map.of(
+            ".jpg", MediaType.IMAGE_JPEG, ".jpeg", MediaType.IMAGE_JPEG,
+            ".png", MediaType.IMAGE_PNG, ".webp", MediaType.parseMediaType("image/webp"));
     private static final SecureRandom RANDOM = new SecureRandom();
 
     private final Path uploads;
@@ -79,7 +83,13 @@ public class PhotoController {
         if (!file.startsWith(uploads) || !Files.isRegularFile(file)) {
             throw new ApiException(HttpStatus.NOT_FOUND, "no such photo");
         }
+        String ext = extensionOf(file.getFileName().toString());
+        MediaType contentType = PHOTO_TYPES.get(ext);
+        if (contentType == null) {
+            throw new ApiException(HttpStatus.NOT_FOUND, "no such photo");
+        }
         return ResponseEntity.ok()
+                .contentType(contentType)
                 .header("X-Content-Type-Options", "nosniff")
                 .body(new FileSystemResource(file));
     }

@@ -290,15 +290,32 @@ async fn upload_photo(AxumState(state): AxumState<State>, headers: HeaderMap,
     fail(StatusCode::BAD_REQUEST, "no photo")
 }
 
+fn photo_type(ext: &str) -> Option<&'static str> {
+    match ext {
+        "jpg" | "jpeg" => Some("image/jpeg"),
+        "png" => Some("image/png"),
+        "webp" => Some("image/webp"),
+        _ => None,
+    }
+}
+
 async fn fetch_photo(AxumState(state): AxumState<State>,
                      axum::extract::Path(name): axum::extract::Path<String>) -> Response {
     let Some(base) = Path::new(&name).file_name() else {
         return fail(StatusCode::NOT_FOUND, "no such photo");
     };
+    let ext = Path::new(base)
+        .extension()
+        .and_then(|e| e.to_str())
+        .unwrap_or_default()
+        .to_lowercase();
+    let Some(content_type) = photo_type(&ext) else {
+        return fail(StatusCode::NOT_FOUND, "no such photo");
+    };
     let file = PathBuf::from(&state.uploads).join(base);
     match tokio::fs::read(&file).await {
         Ok(bytes) => (
-            [(header::CONTENT_TYPE, "application/octet-stream"),
+            [(header::CONTENT_TYPE, content_type),
              (header::X_CONTENT_TYPE_OPTIONS, "nosniff")],
             bytes,
         )

@@ -13,6 +13,8 @@ CI fixtures and Agent-skill fixtures — each graded against a generated ground 
 ```
 projects/<lang>/app/                     # a complete application (README, Dockerfile, OpenAPI) — no hint in the code
 projects/<lang>/app-patched/             # the same application, every weakness fixed (fixes explained here only)
+projects/compose.yml                     # run all twenty applications at once
+projects/verify.sh                       # build + run + exercise every application in docker
 dataset/<lang>.json                      # ground truth of projects/<lang>: weaknesses (anchors), deps, decoys
 dataset/lint.json                        # words app/ must not contain (CWE ids, "vuln", "unsafe" comments…)
 secrets/catalogue/<provider>/*.txt       # one example per secret rule (1157 files, all 1667 rules covered)
@@ -35,6 +37,8 @@ benchmark/ground-truth/<theme>.json      # generated ground truth: secrets, proj
 
 ### Ground truth & benchmark
 ```bash
+docker compose -f projects/compose.yml up -d --build     # run the ten applications (+ their patched twins)
+projects/verify.sh                                       # build and exercise all twenty in docker
 python3 benchmark/src/build_report.py                    # checks projects + regenerates the ground truth
 uv run python benchmark/src/benchmark.py install --all   # install scanner tools
 uv run python benchmark/src/benchmark.py run             # static themes
