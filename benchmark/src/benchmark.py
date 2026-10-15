@@ -7,7 +7,8 @@ fixtures, maps every finding to the per-theme ground truth
 
   * what was **found** (true positives, CWE-accurate or not),
   * what was **missed** (false negatives in the scanner's expected scope),
-  * **false positives** (reports on a ``patched.*`` / look-alike / benign fixture),
+  * **false positives** (reports on a ``patched.*`` / look-alike / benign fixture, or on
+    a fixed line / decoy line of a ``projects/<lang>/app-patched`` application),
   * **noise** (reports on repo files that are not a known fixture).
 
 It then ranks the **top-3 scanners per family** (across all themes), and writes the
@@ -21,9 +22,9 @@ Usage
     python3 benchmark/src/benchmark.py list                 # scanners + install status
 
     # run the benchmark
-    python3 benchmark/src/benchmark.py run                  # every theme except dast (default)
-    python3 benchmark/src/benchmark.py run --all            # incl. dast (launches dynamic/ app)
-    python3 benchmark/src/benchmark.py run --theme static   # one theme
+    python3 benchmark/src/benchmark.py run                  # every static theme (default)
+    python3 benchmark/src/benchmark.py run --all            # incl. projects-dast (builds + runs each app in docker)
+    python3 benchmark/src/benchmark.py run --theme projects # one theme
     python3 benchmark/src/benchmark.py run --theme skills --scanner cisco-ai-skill-scanner
 
 Disabling scanners
@@ -44,6 +45,7 @@ import asyncio
 import html
 import json
 import os
+import re
 import socket
 import subprocess
 import sys
@@ -64,14 +66,21 @@ from dsbench.models import Family, Mode, ToolStatus      # noqa: E402
 
 GROUND_TRUTH_DIR = REPO / "benchmark" / "ground-truth"
 
-# Theme -> (fixture dir, scan mode). Themes are the same five as the ground truth.
+# Theme -> (fixture dir, scan mode).
 THEMES: dict[str, tuple[str, Mode]] = {
-    "static": ("static", Mode.STATIC),
+    "secrets": ("secrets", Mode.STATIC),
+    "projects": ("projects", Mode.STATIC),
     "pipeline": ("pipeline", Mode.STATIC),
-    "llm": ("llm", Mode.STATIC),
     "skills": ("skills", Mode.STATIC),
-    "dynamic": ("dynamic", Mode.DYNAMIC),
+    "projects-dast": ("projects", Mode.DYNAMIC),
 }
+# Theme -> ground-truth file (when it differs from the theme name).
+GT_FILE = {"projects-dast": "projects"}
+PROJECT_THEMES = {"projects", "projects-dast"}
+
+
+def is_dynamic(theme: str) -> bool:
+    return THEMES[theme][1] == Mode.DYNAMIC
 
 # Each scanner's *expected scope*: which ground-truth ``scanner_types`` it is
 # meant to cover. Used as the fair recall denominator and to decide whether a
@@ -96,8 +105,11 @@ FAMILY_ORDER = ["SECRET", "SAST", "IAC", "SCA", "PIPELINE", "DAST", "SKILL", "LI
 # Ground truth
 # --------------------------------------------------------------------------- #
 def load_theme_gt(theme: str) -> dict:
-    """positives/negatives/catalogue/dast for one theme, keyed by repo path."""
-    doc = json.loads((GROUND_TRUTH_DIR / f"{theme}.json").read_text(encoding="utf-8"))
+    """positives/negatives/catalogue/dast for one theme, keyed by repo path
+    (by weakness id for the project themes)."""
+    doc = json.loads((GROUND_TRUTH_DIR / f"{GT_FILE.get(theme, theme)}.json").read_text(encoding="utf-8"))
+    if theme in PROJECT_THEMES:
+        return load_projects_gt(doc)
     positives: dict[str, dict] = {}
     dast: list[dict] = []
     for f in doc.get("positives", []):
@@ -128,13 +140,50 @@ def load_theme_gt(theme: str) -> dict:
     catalogue: dict[str, dict] = {}
     cat = doc.get("secret_catalogue") or {}
     if cat:
-        cat_dir = REPO / cat.get("dir", "static/CWE-798/catalogue")
+        cat_dir = REPO / cat.get("dir", "secrets/catalogue")
         if cat_dir.is_dir():
             for p in sorted(cat_dir.rglob("*.txt")):
                 catalogue[str(p.relative_to(REPO))] = {
                     "cwes": {cat.get("expected_cwe", "CWE-798")}, "types": {"SECRET"}}
     return {"positives": positives, "negatives": negatives,
             "catalogue": catalogue, "dast": dast}
+
+
+def _norm_pkg(name: str) -> str:
+    return name.lower().replace("_", "-").replace(".", "-")
+
+
+def _endpoint_key(app: str, endpoint: str) -> str:
+    return f"{app} {endpoint}"
+
+
+def load_projects_gt(doc: dict) -> dict:
+    """Line-level ground truth of the projects/ applications, keyed by weakness id."""
+    positives: dict[str, dict] = {}
+    dast: list[dict] = []
+    for f in doc.get("positives", []):
+        types = {str(t).upper() for t in f.get("scanner_types", [])}
+        cwes = {c["id"] for c in f.get("cwe", []) if c.get("id")} | {f.get("expected_cwe")} - {None}
+        loc = f.get("location") or {}
+        app = next((a["app"] for a in doc.get("apps", []) if loc.get("file", "").startswith(a["app"] + "/")), "")
+        if f.get("analysis") == "dynamic":
+            method, _, path = (f.get("endpoint") or "").partition(" ")
+            dast.append({"id": f["id"], "app": app, "method": method.upper(),
+                         "path": path.split("?", 1)[0], "cwes": cwes,
+                         "endpoint": _endpoint_key(app, f.get("endpoint") or "")})
+            continue
+        locs = [(loc["file"], loc.get("start_line"))] + [
+            (a["file"], a.get("start_line")) for a in f.get("alt_locations", [])]
+        positives[f["id"]] = {"cwes": cwes, "types": types, "locs": locs,
+                              "package": _norm_pkg(f["package"]) if f.get("package") else None,
+                              "version": f.get("version"), "app": app}
+    negatives: dict[str, dict] = {}
+    for n in doc.get("negatives", []):
+        negatives[n["id"]] = {"kind": n.get("kind", ""), "file": n["file"], "line": n.get("start_line"),
+                              "types": {str(t).upper() for t in n.get("scanner_types", [])},
+                              "cwes": {n.get("expected_cwe")} - {None}}
+    return {"positives": positives, "negatives": negatives, "catalogue": {}, "dast": dast,
+            "apps": doc.get("apps", []), "tol": int(doc.get("line_tolerance", 3))}
 
 
 # --------------------------------------------------------------------------- #
@@ -197,34 +246,73 @@ def run_theme(theme: str, scanner_names: list[str] | None, raw_dir: Path | None)
     """Run the applicable scanners for a theme and return their Report."""
     theme_dir, mode = THEMES[theme]
     if mode == Mode.DYNAMIC:
-        return _run_dynamic(theme_dir, scanner_names, raw_dir)
+        raise ValueError("dynamic themes are run per application (see run_projects_dast)")
     target = REPO / theme_dir
     return asyncio.run(runner.run_scan(
         str(target), mode=Mode.STATIC, scanners=scanner_names, raw_dir=raw_dir))
 
 
-def _run_dynamic(theme_dir: str, scanner_names: list[str] | None, raw_dir: Path | None):
-    app = REPO / theme_dir / "app.js"
-    if not app.is_file():
-        raise SystemExit(f"dynamic target not found: {app}")
+def _docker(*args: str, timeout: int = 900) -> subprocess.CompletedProcess:
+    return subprocess.run(["docker", *args], capture_output=True, text=True, timeout=timeout, check=False)
+
+
+def _wait_health(url: str, timeout: float = 120.0) -> bool:
+    import urllib.request
+    deadline = time.monotonic() + timeout
+    while time.monotonic() < deadline:
+        try:
+            with urllib.request.urlopen(url, timeout=3) as r:  # noqa: S310 — local container
+                if r.status < 500:
+                    return True
+        except Exception:  # noqa: BLE001 — not up yet
+            pass
+        time.sleep(1)
+    return False
+
+
+def run_app_container(app_dir: Path, runtime: dict, scanner_names: list[str] | None,
+                      raw_dir: Path | None):
+    """Build ``app_dir`` with its Dockerfile, run it on a free local port, run the
+    DAST scanners against it and return their Report (None if it did not start)."""
+    tag = "guinea-pig/" + "-".join(app_dir.relative_to(REPO / "projects").parts).lower()
+    print(f"  building {tag} …")
+    b = _docker("build", "-q", "-t", tag, str(app_dir), timeout=1800)
+    if b.returncode != 0:
+        print(f"  build failed: {b.stderr.strip()[-400:]}")
+        return None
     port = _free_port()
-    env = {**os.environ, "PORT": str(port)}
-    print(f"  launching dynamic app: node {app} (PORT={port})")
-    proc = subprocess.Popen(["node", str(app)], cwd=str(app.parent), env=env,
-                            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    env_args = [a for k, v in (runtime.get("env") or {}).items() for a in ("-e", f"{k}={v}")]
+    r = _docker("run", "-d", "--rm", "-p", f"127.0.0.1:{port}:{runtime.get('port', 8080)}",
+                *env_args, tag)
+    if r.returncode != 0:
+        print(f"  run failed: {r.stderr.strip()[-400:]}")
+        return None
+    cid = r.stdout.strip()
     try:
-        if not _wait_http(port):
-            raise SystemExit("dynamic app did not come up on time")
         url = f"http://127.0.0.1:{port}"
+        if not _wait_health(url + runtime.get("health", "/")):
+            print("  application did not become healthy in time")
+            return None
         return asyncio.run(runner.run_scan(
             url, mode=Mode.DYNAMIC, scanners=scanner_names, raw_dir=raw_dir,
             allow_private_urls=True))
     finally:
-        proc.terminate()
-        try:
-            proc.wait(timeout=5)
-        except subprocess.TimeoutExpired:
-            proc.kill()
+        _docker("rm", "-f", cid, timeout=60)
+
+
+def run_projects_dast(gt: dict, scanner_names: list[str] | None, raw_dir: Path | None) -> dict:
+    """{app: {"app": Report|None, "patched": Report|None}} for every application."""
+    out: dict[str, dict] = {}
+    for a in gt.get("apps", []):
+        print(f"  --- {a['app']}")
+        sub = (raw_dir / a["language"]) if raw_dir else None
+        out[a["app"]] = {
+            "app": run_app_container(REPO / a["app"], a.get("runtime", {}), scanner_names,
+                                     sub / "app" if sub else None),
+            "patched": run_app_container(REPO / a["patched"], a.get("runtime", {}), scanner_names,
+                                         sub / "patched" if sub else None),
+        }
+    return out
 
 
 # --------------------------------------------------------------------------- #
@@ -280,50 +368,130 @@ def score_theme(theme: str, gt: dict, report) -> dict:
 
 
 # --------------------------------------------------------------------------- #
-# Scoring — dynamic (endpoint-graded)
+# Scoring — projects (line-level static, endpoint-level dynamic)
 # --------------------------------------------------------------------------- #
-def _path_match(path: str, endpoint: str) -> bool:
-    p = (path or "/").split("?", 1)[0].rstrip("/") or "/"
-    ep = endpoint.rstrip("/") or "/"
-    return p == ep or p.startswith(ep + "/")
+_LOC_RE = re.compile(r"^(.*?):(\d+)(?::\d+)?$")
 
 
-def score_dynamic(gt: dict, report) -> dict:
-    """Endpoint-graded scoring for the dynamic theme. DAST findings (nuclei/zap)
-    carry a URL; match its path to the ground-truth endpoints and its CWE to the
-    endpoint's expected_cwe. Site-wide findings (no per-route path, e.g. a missing
-    cookie/header) are still credited to an endpoint when their CWE matches it."""
-    endpoints = [e for e in gt.get("dast", []) if e.get("endpoint")]
-    all_exp = set().union(*(e["cwes"] for e in endpoints)) if endpoints else set()
+def _project_path(location: str, theme_dir: str) -> tuple[str, int | None]:
+    """Finding location -> (repo-relative path, line or None)."""
+    loc = location[7:] if location.startswith("file://") else location
+    m = _LOC_RE.match(loc)
+    path, line = (m.group(1), int(m.group(2))) if m else (loc, None)
+    pp = Path(path)
+    if pp.is_absolute():
+        try:
+            path = str(pp.resolve().relative_to(REPO))
+        except ValueError:
+            pass
+    elif not path.startswith(theme_dir + "/"):
+        path = f"{theme_dir}/{path}".replace("//", "/")
+    return path, line
+
+
+def score_projects(theme: str, gt: dict, report) -> dict:
+    """Line-level scoring: a finding hits a weakness when it is in the sink's (or an
+    alternate location's) file within ±tol lines; an SCA finding hits a dependency
+    when it is on its manifest and names the package. Findings on a fixed line or a
+    decoy line (±tol) are false positives; anything else under projects/ is noise."""
+    theme_dir = THEMES[theme][0]
+    positives, negatives, tol = gt["positives"], gt["negatives"], gt["tol"]
     out: dict[str, dict] = {}
+
+    def near(a: int | None, b: int | None) -> bool:
+        return a is None or b is None or abs(a - b) <= tol
+
     for tr in report.tools:
-        hits = []  # (path, cwes) per finding
+        scope = SCOPE.get(tr.scanner, set())
+        hit_cwes: dict[str, set[str]] = defaultdict(set)
+        fps: set[str] = set()
+        noise: set[str] = set()
         for f in tr.findings:
-            loc = f.location or ""
-            path = urlsplit(loc).path if "://" in loc else loc
-            hits.append((path or "/", set(f.cwes)))
-        found, found_cwe, detected = [], 0, set()
-        for e in endpoints:
-            ep, exp = e["endpoint"], e["cwes"]
-            path_hit = any(_path_match(p, ep) for p, _ in hits)
-            cwe_hit = any(exp & cw for _, cw in hits)
-            if path_hit or cwe_hit:
-                found.append(ep)
-                detected.add(ep)
-                if cwe_hit:
-                    found_cwe += 1
-        missed = [e["endpoint"] for e in endpoints if e["endpoint"] not in detected]
-        noise = sorted({p for p, cw in hits
-                        if not any(_path_match(p, e["endpoint"]) for e in endpoints)
-                        and not (cw & all_exp)})
+            path, line = _project_path(f.location, theme_dir)
+            blob = _norm_pkg(f"{f.location} {f.rule} {f.message}")
+            matched = False
+            for pid, pos in positives.items():
+                if pos["package"]:
+                    manifest = pos["locs"][0][0]
+                    if pos["package"] in blob and (path == manifest or path.startswith(pos["app"] + "/")):
+                        hit_cwes[pid] |= set(f.cwes)
+                        matched = True
+                elif any(path == lf and near(line, ll) for lf, ll in pos["locs"]):
+                    hit_cwes[pid] |= set(f.cwes)
+                    matched = True
+            if matched:
+                continue
+            neg = [nid for nid, n in negatives.items() if path == n["file"] and near(line, n["line"])]
+            if neg:
+                fps.update(neg)
+            elif path.startswith(theme_dir + "/"):
+                noise.add(f"{path}:{line}" if line else path)
+
+        applicable = {pid for pid, m in positives.items() if scope & m["types"]}
+        found = set(hit_cwes) & applicable
+        found_cwe = sum(1 for pid in found if hit_cwes[pid] & positives[pid]["cwes"])
         out[tr.scanner] = {
             "status": tr.status.value, "duration": tr.duration,
             "family": tr.family.value, "raw": len(tr.findings),
-            "applicable": len(endpoints), "found": len(found),
+            "applicable": len(applicable), "found": len(found),
             "found_cwe": found_cwe, "found_hit": len(found) - found_cwe,
-            "missed": missed, "extra": [], "fp": [], "noise": noise,
-            "detected": detected,
+            "missed": sorted(applicable - found), "extra": sorted(set(hit_cwes) - applicable),
+            "fp": sorted(fps), "noise": sorted(noise),
+            "detected": set(hit_cwes),
         }
+    return out
+
+
+def _endpoint_hit(e: dict, path: str, cwes: set[str]) -> tuple[bool, bool]:
+    """(path matches the endpoint template, CWE matches)."""
+    tmpl = re.sub(r"\{[^/}]+\}|:[A-Za-z_]\w*", r"[^/]+", e["path"].rstrip("/") or "/")
+    p = (path or "/").split("?", 1)[0].rstrip("/") or "/"
+    return bool(re.fullmatch(tmpl + r"(/.*)?", p)), bool(e["cwes"] & cwes)
+
+
+def score_projects_dast(gt: dict, runs: dict) -> dict:
+    """Endpoint-graded scoring over every application. A weakness endpoint is found
+    when a finding on the vulnerable app hits its path (or its CWE, for site-wide
+    findings); the same hit (path AND CWE) on the patched app is a false positive."""
+    out: dict[str, dict] = {}
+    for app, reps in runs.items():
+        eps = [e for e in gt.get("dast", []) if e["app"] == app]
+        for kind in ("app", "patched"):
+            report = reps.get(kind)
+            if report is None:
+                continue
+            for tr in report.tools:
+                s = out.setdefault(tr.scanner, {
+                    "status": tr.status.value, "duration": 0.0, "family": tr.family.value,
+                    "raw": 0, "applicable": 0, "found": 0, "found_cwe": 0, "found_hit": 0,
+                    "missed": [], "extra": [], "fp": [], "noise": [], "detected": set()})
+                s["duration"] += tr.duration
+                s["raw"] += len(tr.findings)
+                hits = []
+                for f in tr.findings:
+                    loc = f.location or ""
+                    hits.append((urlsplit(loc).path if "://" in loc else loc, set(f.cwes)))
+                for e in eps:
+                    res = [_endpoint_hit(e, pth, cw) for pth, cw in hits]
+                    path_hit = any(ph for ph, _ in res)
+                    cwe_hit = any(ch for _, ch in res)
+                    both = any(ph and ch for ph, ch in res)
+                    if kind == "app":
+                        s["applicable"] += 1
+                        if path_hit or cwe_hit:
+                            s["found"] += 1
+                            s["detected"].add(e["endpoint"])
+                            s["found_cwe" if cwe_hit else "found_hit"] += 1
+                        else:
+                            s["missed"].append(e["endpoint"])
+                    elif both:
+                        s["fp"].append(f"{app}-patched {e['endpoint'].split(' ', 1)[1]}")
+                if kind == "app":
+                    for pth, cw in hits:
+                        if not any(any(_endpoint_hit(e, pth, cw)) for e in eps):
+                            s["noise"].append(f"{app} {pth}")
+    for s in out.values():
+        s["noise"] = sorted(set(s["noise"]))
     return out
 
 
@@ -349,7 +517,7 @@ def top_by_family(results: dict, gts: dict) -> dict:
             errs[sc][1] += len(s.get("noise") or ())
     fam_pos: dict[str, set] = defaultdict(set)
     for theme, gt in gts.items():
-        if theme == "dynamic":
+        if is_dynamic(theme):
             for e in gt.get("dast", []):
                 if e.get("endpoint"):
                     fam_pos["DAST"].add(e["endpoint"])
@@ -450,7 +618,7 @@ def render(results: dict[str, dict], gts: dict[str, dict]) -> str:
     L.append("## Not found by any scanner (per theme)\n")
     for theme, per in results.items():
         gt = gts[theme]
-        if theme == "dynamic":
+        if is_dynamic(theme):
             all_pos = {e["endpoint"]: {"cwes": e["cwes"]} for e in gt.get("dast", [])}
         else:
             all_pos = {**gt["positives"], **gt["catalogue"]}
@@ -571,7 +739,7 @@ def cmd_run(args) -> int:
     elif args.all:
         themes = list(THEMES)
     else:  # default + --all-except-dast
-        themes = [t for t in THEMES if t != "dynamic"]
+        themes = [t for t in THEMES if not is_dynamic(t)]
     requested = args.scanner.split(",") if args.scanner else None
 
     stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -586,6 +754,14 @@ def cmd_run(args) -> int:
         gts[theme] = gt
         names = select_scanner_names(theme, requested)
         raw = out_dir / "raw" / theme
+        if theme == "projects-dast":
+            try:
+                runs = run_projects_dast(gt, names, raw)
+            except Exception as exc:  # noqa: BLE001 — one theme failing must not sink the rest
+                print(f"  theme {theme} failed: {exc}")
+                continue
+            results[theme] = score_projects_dast(gt, runs)
+            continue
         try:
             report = run_theme(theme, names, raw)
         except Exception as exc:  # noqa: BLE001 — one theme failing must not sink the rest
@@ -595,7 +771,7 @@ def cmd_run(args) -> int:
             print(f"  {tr.scanner:24} {tr.status.value:8} "
                   f"{len(tr.findings):5} findings  {tr.duration:5.1f}s"
                   f"  {tr.error or tr.skip_reason or ''}")
-        results[theme] = (score_dynamic(gt, report) if theme == "dynamic"
+        results[theme] = (score_projects(theme, gt, report) if theme in PROJECT_THEMES
                           else score_theme(theme, gt, report))
 
     md = render(results, gts)
@@ -631,8 +807,8 @@ def main() -> int:
     p_run = sub.add_parser("run", help="run the benchmark")
     g = p_run.add_mutually_exclusive_group()
     g.add_argument("--theme", choices=list(THEMES), help="run a single theme")
-    g.add_argument("--all", action="store_true", help="run every theme (incl. dast)")
-    g.add_argument("--all-except-dast", action="store_true", help="every theme but dast (default)")
+    g.add_argument("--all", action="store_true", help="run every theme (incl. projects-dast)")
+    g.add_argument("--all-except-dast", action="store_true", help="every static theme (default)")
     p_run.add_argument("--scanner", help="comma-separated scanner names to run (default: all enabled)")
     p_run.set_defaults(func=cmd_run)
 

@@ -1,0 +1,14 @@
+{
+  "language": "java",
+  "app": "projects/java/app",
+  "patched": "projects/java/app-patched",
+  "runtime": {
+    "port": 8000,
+    "openapi": "/openapi.yml",
+    "health": "/healthz",
+    "env": { "TOOLSHED_TOKEN_KEY": "benchmark-instance-key-long-enough-for-hs256" }
+  },
+  "weaknesses": [],
+  "dependencies": [],
+  "decoys": []
+}

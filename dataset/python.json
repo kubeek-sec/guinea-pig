@@ -1,0 +1,14 @@
+{
+  "language": "python",
+  "app": "projects/python/app",
+  "patched": "projects/python/app-patched",
+  "runtime": {
+    "port": 8000,
+    "openapi": "/openapi.yml",
+    "health": "/healthz",
+    "env": { "TOOLSHED_TOKEN_KEY": "benchmark-instance-key" }
+  },
+  "weaknesses": [],
+  "dependencies": [],
+  "decoys": []
+}

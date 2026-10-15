@@ -1,0 +1,181 @@
+{
+  "schema_version": "6.0",
+  "theme": "projects",
+  "report": {
+    "title": "guinea-pig \u2014 whole applications per language (ground truth)",
+    "scanner_families": [],
+    "generated_by": "benchmark/src/build_report.py (derived from the fixtures)",
+    "scope": "projects/<lang>/app (weaknesses) and projects/<lang>/app-patched (same app, fixed). Authored in dataset/<lang>.json, anchors resolved to lines. Static positives are graded by file + line (\u00b13); DAST positives by endpoint.",
+    "fields": {
+      "positives[]": "fixtures a scanner SHOULD detect; keyed by location.file",
+      "positives[].scanner_types": "families able to detect it (SAST, IAC, PIPELINE, SECRET, DAST, SCA, SKILL)",
+      "positives[].expected_cwe": "ground-truth CWE for benchmark/src/benchmark.py (null for skills \u2014 see category)",
+      "positives[].alt_locations": "projects only: source / related lines a scanner may report instead of the sink",
+      "positives[].pattern": "projects only: how the weakness is laid out (direct, inter-file, second-order, ...)",
+      "negatives[].start_line": "projects only: the must-not-flag line (patched sink or decoy)",
+      "negatives[]": "fixtures a scanner should NOT flag; a report here is a false positive",
+      "negatives[].kind": "remediation / lookalike / benign / benign-lookalike"
+    },
+    "severity_scale": [
+      "Critical",
+      "High",
+      "Medium",
+      "Low",
+      "Info"
+    ],
+    "note": "Re-run benchmark/src/build_report.py after adding/removing fixtures."
+  },
+  "summary": {
+    "positives": 0,
+    "negatives": 0,
+    "by_analysis": {},
+    "by_scanner_type": {},
+    "by_severity": {},
+    "by_language": {}
+  },
+  "positives": [],
+  "negatives": [],
+  "apps": [
+    {
+      "language": "c",
+      "app": "projects/c/app",
+      "patched": "projects/c/app-patched",
+      "runtime": {
+        "port": 8000,
+        "openapi": "/openapi.yml",
+        "health": "/healthz",
+        "env": {
+          "TOOLSHED_TOKEN_KEY": "benchmark-instance-key"
+        }
+      },
+      "dataset": "dataset/c.json"
+    },
+    {
+      "language": "cpp",
+      "app": "projects/cpp/app",
+      "patched": "projects/cpp/app-patched",
+      "runtime": {
+        "port": 8000,
+        "openapi": "/openapi.yml",
+        "health": "/healthz",
+        "env": {
+          "TOOLSHED_TOKEN_KEY": "benchmark-instance-key"
+        }
+      },
+      "dataset": "dataset/cpp.json"
+    },
+    {
+      "language": "csharp",
+      "app": "projects/csharp/app",
+      "patched": "projects/csharp/app-patched",
+      "runtime": {
+        "port": 8000,
+        "openapi": "/openapi.yml",
+        "health": "/healthz",
+        "env": {
+          "TOOLSHED_TOKEN_KEY": "benchmark-instance-key-long-enough-for-hs256"
+        }
+      },
+      "dataset": "dataset/csharp.json"
+    },
+    {
+      "language": "go",
+      "app": "projects/go/app",
+      "patched": "projects/go/app-patched",
+      "runtime": {
+        "port": 8000,
+        "openapi": "/openapi.yml",
+        "health": "/healthz",
+        "env": {
+          "TOOLSHED_TOKEN_KEY": "benchmark-instance-key"
+        }
+      },
+      "dataset": "dataset/go.json"
+    },
+    {
+      "language": "java",
+      "app": "projects/java/app",
+      "patched": "projects/java/app-patched",
+      "runtime": {
+        "port": 8000,
+        "openapi": "/openapi.yml",
+        "health": "/healthz",
+        "env": {
+          "TOOLSHED_TOKEN_KEY": "benchmark-instance-key-long-enough-for-hs256"
+        }
+      },
+      "dataset": "dataset/java.json"
+    },
+    {
+      "language": "php",
+      "app": "projects/php/app",
+      "patched": "projects/php/app-patched",
+      "runtime": {
+        "port": 8000,
+        "openapi": "/openapi.yml",
+        "health": "/healthz",
+        "env": {
+          "TOOLSHED_TOKEN_KEY": "benchmark-instance-key"
+        }
+      },
+      "dataset": "dataset/php.json"
+    },
+    {
+      "language": "python",
+      "app": "projects/python/app",
+      "patched": "projects/python/app-patched",
+      "runtime": {
+        "port": 8000,
+        "openapi": "/openapi.yml",
+        "health": "/healthz",
+        "env": {
+          "TOOLSHED_TOKEN_KEY": "benchmark-instance-key"
+        }
+      },
+      "dataset": "dataset/python.json"
+    },
+    {
+      "language": "ruby",
+      "app": "projects/ruby/app",
+      "patched": "projects/ruby/app-patched",
+      "runtime": {
+        "port": 8000,
+        "openapi": "/openapi.yml",
+        "health": "/healthz",
+        "env": {
+          "TOOLSHED_TOKEN_KEY": "benchmark-instance-key"
+        }
+      },
+      "dataset": "dataset/ruby.json"
+    },
+    {
+      "language": "rust",
+      "app": "projects/rust/app",
+      "patched": "projects/rust/app-patched",
+      "runtime": {
+        "port": 8000,
+        "openapi": "/openapi.yml",
+        "health": "/healthz",
+        "env": {
+          "TOOLSHED_TOKEN_KEY": "benchmark-instance-key"
+        }
+      },
+      "dataset": "dataset/rust.json"
+    },
+    {
+      "language": "typescript",
+      "app": "projects/typescript/app",
+      "patched": "projects/typescript/app-patched",
+      "runtime": {
+        "port": 8000,
+        "openapi": "/openapi.yml",
+        "health": "/healthz",
+        "env": {
+          "TOOLSHED_TOKEN_KEY": "benchmark-instance-key"
+        }
+      },
+      "dataset": "dataset/typescript.json"
+    }
+  ],
+  "line_tolerance": 3
+}

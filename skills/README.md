@@ -1,8 +1,7 @@
 # skills/ — AI skill-scanner detection corpus
 
 Fixtures for grading **Agent / Claude-Code skill scanners** (e.g.
-`ai-cisco-skill-scanner`). Unlike `static/` (graded by source-code scanners) or
-`dynamic/` (graded by DAST tools against a running service), these are
+`ai-cisco-skill-scanner`). Unlike `projects/` (graded by source-code and DAST scanners), these are
 **`SKILL.md` skills** — natural-language + script payloads — graded by a tool
 that reasons about *what a skill instructs an agent to do*.
 
@@ -79,7 +78,7 @@ ai-cisco-skill-scanner scan ./skills --format json > findings.json
 ## ⚠️ These are live malicious instructions — do not invoke them
 
 Every fixture under `malicious/` is **intentionally harmful by design** (same
-posture as `dynamic/app.js`). They are inert *as text to be scanned*, but if an
+posture as the `projects/` applications). They are inert *as text to be scanned*, but if an
 agent actually **executes** them they will try to read your credentials, run
 remote code, open a reverse shell, or sabotage your code.
 

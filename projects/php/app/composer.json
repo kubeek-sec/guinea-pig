@@ -1,0 +1,22 @@
+{
+  "name": "example/toolshed",
+  "description": "Tool rentals for a neighbourhood workshop",
+  "type": "project",
+  "license": "MIT",
+  "require": {
+    "php": ">=8.2",
+    "ext-pdo": "*",
+    "ext-pdo_sqlite": "*",
+    "slim/slim": "^4.13",
+    "slim/psr7": "^1.6",
+    "firebase/php-jwt": "^6.10"
+  },
+  "autoload": {
+    "psr-4": {
+      "Toolshed\\": "src/"
+    }
+  },
+  "config": {
+    "sort-packages": true
+  }
+}

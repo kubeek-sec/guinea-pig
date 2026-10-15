@@ -1,0 +1,22 @@
+[package]
+name = "toolshed"
+version = "1.4.2"
+edition = "2021"
+description = "Tool rentals for a neighbourhood workshop"
+license = "MIT"
+
+[dependencies]
+axum = { version = "0.7.5", features = ["multipart"] }
+bcrypt = "0.15.1"
+chrono = { version = "0.4.38", default-features = false, features = ["clock", "std"] }
+hex = "0.4.3"
+jsonwebtoken = "9.3.0"
+rand = "0.8.5"
+rusqlite = { version = "0.31.0", features = ["bundled"] }
+serde = { version = "1.0.203", features = ["derive"] }
+serde_json = "1.0.118"
+tokio = { version = "1.38.0", features = ["rt-multi-thread", "macros", "net", "fs"] }
+tower-http = { version = "0.5.2", features = ["fs"] }
+
+[profile.release]
+strip = true

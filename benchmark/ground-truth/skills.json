@@ -1,5 +1,5 @@
 {
-  "schema_version": "5.0",
+  "schema_version": "6.0",
   "theme": "skills",
   "report": {
     "title": "guinea-pig \u2014 Agent skill-scanner fixtures (ground truth)",
@@ -12,7 +12,9 @@
       "positives[]": "fixtures a scanner SHOULD detect; keyed by location.file",
       "positives[].scanner_types": "families able to detect it (SAST, IAC, PIPELINE, SECRET, DAST, SCA, SKILL)",
       "positives[].expected_cwe": "ground-truth CWE for benchmark/src/benchmark.py (null for skills \u2014 see category)",
-      "positives[].source": "llm only: original annotated fixture, held back from the model under test",
+      "positives[].alt_locations": "projects only: source / related lines a scanner may report instead of the sink",
+      "positives[].pattern": "projects only: how the weakness is laid out (direct, inter-file, second-order, ...)",
+      "negatives[].start_line": "projects only: the must-not-flag line (patched sink or decoy)",
       "negatives[]": "fixtures a scanner should NOT flag; a report here is a false positive",
       "negatives[].kind": "remediation / lookalike / benign / benign-lookalike"
     },

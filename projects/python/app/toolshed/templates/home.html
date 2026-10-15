@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Toolshed</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 2rem auto; max-width: 48rem; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border-bottom: 1px solid #ddd; padding: .5rem; text-align: left; }
+    .out { color: #999; }
+  </style>
+</head>
+<body>
+  <h1>Toolshed</h1>
+  <p>Tools the workshop lends to its members.</p>
+  <table>
+    <tr><th>Tool</th><th>Category</th><th>Per day</th><th>Status</th></tr>
+    {% for tool in tools %}
+    <tr>
+      <td>{{ tool.name }}</td>
+      <td>{{ tool.category }}</td>
+      <td>{{ "%.2f"|format(tool.daily_rate) }} €</td>
+      <td>{% if tool.available %}on the rack{% else %}<span class="out">out</span>{% endif %}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  <p><a href="/openapi.yml">API description</a></p>
+</body>
+</html>

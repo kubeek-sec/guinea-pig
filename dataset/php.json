@@ -1,0 +1,14 @@
+{
+  "language": "php",
+  "app": "projects/php/app",
+  "patched": "projects/php/app-patched",
+  "runtime": {
+    "port": 8000,
+    "openapi": "/openapi.yml",
+    "health": "/healthz",
+    "env": { "TOOLSHED_TOKEN_KEY": "benchmark-instance-key" }
+  },
+  "weaknesses": [],
+  "dependencies": [],
+  "decoys": []
+}

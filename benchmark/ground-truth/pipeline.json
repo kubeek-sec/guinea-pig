@@ -1,5 +1,5 @@
 {
-  "schema_version": "5.0",
+  "schema_version": "6.0",
   "theme": "pipeline",
   "report": {
     "title": "guinea-pig \u2014 supply-chain (SCA) & CI/CD fixtures (ground truth)",
@@ -14,7 +14,9 @@
       "positives[]": "fixtures a scanner SHOULD detect; keyed by location.file",
       "positives[].scanner_types": "families able to detect it (SAST, IAC, PIPELINE, SECRET, DAST, SCA, SKILL)",
       "positives[].expected_cwe": "ground-truth CWE for benchmark/src/benchmark.py (null for skills \u2014 see category)",
-      "positives[].source": "llm only: original annotated fixture, held back from the model under test",
+      "positives[].alt_locations": "projects only: source / related lines a scanner may report instead of the sink",
+      "positives[].pattern": "projects only: how the weakness is laid out (direct, inter-file, second-order, ...)",
+      "negatives[].start_line": "projects only: the must-not-flag line (patched sink or decoy)",
       "negatives[]": "fixtures a scanner should NOT flag; a report here is a false positive",
       "negatives[].kind": "remediation / lookalike / benign / benign-lookalike"
     },
@@ -179,7 +181,7 @@
       "status": "open"
     },
     {
-      "id": "GP-SAST-065",
+      "id": "GP-SAST-001",
       "analysis": "static",
       "scanner_types": [
         "SAST"
@@ -204,7 +206,7 @@
       "status": "open"
     },
     {
-      "id": "GP-SAST-066",
+      "id": "GP-SAST-002",
       "analysis": "static",
       "scanner_types": [
         "SAST"
@@ -229,7 +231,7 @@
       "status": "open"
     },
     {
-      "id": "GP-PIPELINE-008",
+      "id": "GP-PIPELINE-001",
       "analysis": "static",
       "scanner_types": [
         "PIPELINE"
@@ -254,7 +256,7 @@
       "status": "open"
     },
     {
-      "id": "GP-PIPELINE-009",
+      "id": "GP-PIPELINE-002",
       "analysis": "static",
       "scanner_types": [
         "PIPELINE"
@@ -279,7 +281,7 @@
       "status": "open"
     },
     {
-      "id": "GP-PIPELINE-010",
+      "id": "GP-PIPELINE-003",
       "analysis": "static",
       "scanner_types": [
         "PIPELINE"
@@ -304,7 +306,7 @@
       "status": "open"
     },
     {
-      "id": "GP-PIPELINE-011",
+      "id": "GP-PIPELINE-004",
       "analysis": "static",
       "scanner_types": [
         "PIPELINE"
@@ -329,7 +331,7 @@
       "status": "open"
     },
     {
-      "id": "GP-PIPELINE-012",
+      "id": "GP-PIPELINE-005",
       "analysis": "static",
       "scanner_types": [
         "PIPELINE"
@@ -354,7 +356,7 @@
       "status": "open"
     },
     {
-      "id": "GP-PIPELINE-013",
+      "id": "GP-PIPELINE-006",
       "analysis": "static",
       "scanner_types": [
         "PIPELINE"
@@ -379,7 +381,7 @@
       "status": "open"
     },
     {
-      "id": "GP-PIPELINE-014",
+      "id": "GP-PIPELINE-007",
       "analysis": "static",
       "scanner_types": [
         "PIPELINE"
@@ -404,7 +406,7 @@
       "status": "open"
     },
     {
-      "id": "GP-PIPELINE-015",
+      "id": "GP-PIPELINE-008",
       "analysis": "static",
       "scanner_types": [
         "PIPELINE"

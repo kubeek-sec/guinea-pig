@@ -1,8 +1,7 @@
 # pipeline/ — supply-chain (SCA) & CI/CD fixtures
 
 This directory holds **whole-file** fixtures meant to be evaluated by tools that
-need realistic file names / repository structure, rather than the per-CWE
-snippets in `static/`:
+need realistic file names / repository structure:
 
 - **`sca/`** — dependency manifests pinned to versions with known CVEs
   (CWE-1395 / CWE-1104). Real manifest names so SCA tools detect them:
@@ -16,9 +15,6 @@ snippets in `static/`:
   - `ci/gitlab/.gitlab-ci.yml` — CWE-829 (`:latest` image), CWE-494 (`curl|sh`), CWE-94 (`eval $VAR`), CWE-532 (secret echoed)
   - `ci/github/.github/workflows/ci.yml` — CWE-250 (`write-all`), CWE-829 (mutable action tags), CWE-94 (PR-title script injection on `pull_request_target`), CWE-494 (`curl|bash`)
 
-> `static/CWE-829/{github,gitlab}/` contains the same weaknesses as isolated,
-> opengrep-detectable snippets. `pipeline/ci/` contains realistic files for
-> repo-level scanners like plumber. Both are catalogued.
 
 ## Scanning
 

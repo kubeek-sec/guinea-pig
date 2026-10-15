@@ -1,0 +1,151 @@
+openapi: 3.0.3
+info:
+  title: Toolshed API
+  version: 1.4.2
+  description: Tool rentals for a neighbourhood workshop.
+servers:
+  - url: http://localhost:8000
+tags:
+  - name: catalog
+  - name: members
+  - name: rentals
+  - name: photos
+paths:
+  /healthz:
+    get:
+      tags: [catalog]
+      summary: Service health
+      responses:
+        "200": { description: Service is up }
+  /:
+    get:
+      tags: [catalog]
+      summary: Catalogue page
+      responses:
+        "200": { description: HTML listing of the tools }
+  /api/tools:
+    get:
+      tags: [catalog]
+      summary: List the tools
+      parameters:
+        - { name: sort, in: query, schema: { type: string, enum: [name, category, daily_rate] } }
+      responses:
+        "200": { description: The catalogue }
+        "400": { description: Unknown sort column }
+  /api/tools/search:
+    get:
+      tags: [catalog]
+      summary: Search the catalogue
+      parameters:
+        - { name: q, in: query, schema: { type: string } }
+      responses:
+        "200": { description: Matching tools }
+  /api/tools/{tool_id}:
+    get:
+      tags: [catalog]
+      summary: One tool
+      parameters:
+        - { name: tool_id, in: path, required: true, schema: { type: integer } }
+      responses:
+        "200": { description: The tool }
+        "404": { description: Unknown tool }
+  /api/session:
+    post:
+      tags: [members]
+      summary: Sign in and receive a bearer token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email: { type: string, example: ada@toolshed.example }
+                password: { type: string, example: workshop-keeper }
+      responses:
+        "200": { description: Token issued }
+        "401": { description: Bad credentials }
+  /api/members/me:
+    get:
+      tags: [members]
+      summary: The signed-in member
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200": { description: The member }
+        "401": { description: Not signed in }
+  /api/members/{member_id}:
+    get:
+      tags: [members]
+      summary: One member (staff only)
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: member_id, in: path, required: true, schema: { type: integer } }
+      responses:
+        "200": { description: The member }
+        "403": { description: Staff only }
+  /api/rentals:
+    get:
+      tags: [rentals]
+      summary: Rentals of the signed-in member
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200": { description: The rentals }
+    post:
+      tags: [rentals]
+      summary: Take a tool out
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [tool_id]
+              properties:
+                tool_id: { type: integer, example: 1 }
+                days: { type: integer, example: 7 }
+                notes: { type: string }
+      responses:
+        "201": { description: Rental created }
+        "409": { description: Tool already out }
+  /api/rentals/{rental_id}/return:
+    post:
+      tags: [rentals]
+      summary: Bring a tool back
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: rental_id, in: path, required: true, schema: { type: integer } }
+      responses:
+        "200": { description: Returned }
+        "404": { description: Unknown rental }
+  /api/photos:
+    post:
+      tags: [photos]
+      summary: Attach a condition photo
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                photo: { type: string, format: binary }
+      responses:
+        "201": { description: Stored }
+        "400": { description: Not an accepted image }
+  /api/photos/{name}:
+    get:
+      tags: [photos]
+      summary: Fetch a condition photo
+      parameters:
+        - { name: name, in: path, required: true, schema: { type: string } }
+      responses:
+        "200": { description: The image }
+        "404": { description: Unknown photo }
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
